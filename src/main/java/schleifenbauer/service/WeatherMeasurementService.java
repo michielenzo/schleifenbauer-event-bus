@@ -24,7 +24,8 @@ public final class WeatherMeasurementService {
         CurrentForecast current = forecast.current();
 
         return List.of(
-                new Measurement("temperature", current.temperature(), current.timestamp()),
-                new Measurement("humidity", current.relativeHumidity(), current.timestamp()));
+            new Measurement("temperature", current.temperature(), current.timestamp()),
+            new Measurement("humidity", current.relativeHumidity(), current.timestamp())
+        );
     }
 }

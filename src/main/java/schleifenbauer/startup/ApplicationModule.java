@@ -19,14 +19,13 @@ import schleifenbauer.dal.DataSourceProvider;
 import schleifenbauer.dal.DatabaseConfig;
 import schleifenbauer.infrastructure.eventbus.EventBus;
 import schleifenbauer.infrastructure.eventbus.InMemoryEventBus;
-import schleifenbauer.scheduling.WeatherPollingTask;
 
 public final class ApplicationModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(EventBus.class).to(InMemoryEventBus.class).in(Singleton.class);
         bind(WeatherClient.class).to(OpenMeteoWeatherClient.class).in(Singleton.class);
-        bind(StartupTask.class).to(WeatherPollingTask.class).in(Singleton.class);
+        bind(StartupTask.class).to(ApplicationStartupTask.class).in(Singleton.class);
     }
 
     @Provides
