@@ -1,4 +1,4 @@
-package schleifenbauer.eventbus;
+package schleifenbauer.infrastructure.eventbus;
 
 import java.util.function.Consumer;
 

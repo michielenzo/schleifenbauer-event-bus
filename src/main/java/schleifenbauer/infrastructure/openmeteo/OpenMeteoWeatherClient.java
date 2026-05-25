@@ -1,4 +1,4 @@
-package schleifenbauer.weather;
+package schleifenbauer.infrastructure.openmeteo;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -11,10 +11,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import schleifenbauer.application.weather.WeatherClient;
+
 @Singleton
 public final class OpenMeteoWeatherClient implements WeatherClient {
     private static final URI FORECAST_URI = URI.create(
-            "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,relative_humidity_2m");
+            "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,relative_humidity_2m");
 
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
@@ -26,7 +28,7 @@ public final class OpenMeteoWeatherClient implements WeatherClient {
     }
 
     @Override
-    public WeatherForecastEvent fetchForecast() {
+    public OpenMeteoForecastResponse fetchCurrentWeather() {
         HttpRequest request = HttpRequest.newBuilder(FORECAST_URI)
                 .GET()
                 .build();
@@ -38,7 +40,7 @@ public final class OpenMeteoWeatherClient implements WeatherClient {
                 throw new IllegalStateException("Open-Meteo request failed with status " + response.statusCode());
             }
 
-            return objectMapper.readValue(response.body(), WeatherForecastEvent.class);
+            return objectMapper.readValue(response.body(), OpenMeteoForecastResponse.class);
         } catch (IOException exception) {
             throw new UncheckedIOException("Unable to deserialize Open-Meteo response", exception);
         } catch (InterruptedException exception) {

@@ -11,12 +11,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
-import schleifenbauer.eventbus.EventBus;
-import schleifenbauer.eventbus.InMemoryEventBus;
-import schleifenbauer.scheduling.StartupTask;
-import schleifenbauer.weather.OpenMeteoWeatherClient;
-import schleifenbauer.weather.WeatherClient;
-import schleifenbauer.weather.WeatherPollingTask;
+import schleifenbauer.application.StartupTask;
+import schleifenbauer.application.weather.WeatherClient;
+import schleifenbauer.application.weather.WeatherPollingTask;
+import schleifenbauer.infrastructure.eventbus.EventBus;
+import schleifenbauer.infrastructure.eventbus.InMemoryEventBus;
+import schleifenbauer.infrastructure.openmeteo.OpenMeteoWeatherClient;
 
 public final class ApplicationModule extends AbstractModule {
     @Override

@@ -1,4 +1,4 @@
-package schleifenbauer.web;
+package schleifenbauer.application.web;
 
 import com.google.inject.Singleton;
 
