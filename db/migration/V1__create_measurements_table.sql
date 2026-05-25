@@ -1,0 +1,6 @@
+CREATE TABLE measurements (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    channel VARCHAR(255) NOT NULL,
+    value DOUBLE NOT NULL,
+    timestamp DATETIME NOT NULL
+);
