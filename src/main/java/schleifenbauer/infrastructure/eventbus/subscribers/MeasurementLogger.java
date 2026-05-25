@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import schleifenbauer.domain.WeatherMeasurement;
+import schleifenbauer.domain.Measurement;
 import schleifenbauer.infrastructure.eventbus.EventBus;
 
 @Singleton
@@ -20,10 +20,10 @@ public final class MeasurementLogger {
     }
 
     public void register() {
-        eventBus.subscribe(WeatherMeasurement.class, this::logMeasurement);
+        eventBus.subscribe(Measurement.class, this::logMeasurement);
     }
 
-    private void logMeasurement(WeatherMeasurement measurement) {
+    private void logMeasurement(Measurement measurement) {
         LOGGER.info(() -> "Received measurement event: " + measurement);
     }
 }

@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import schleifenbauer.client.WeatherClient;
 import schleifenbauer.client.dto.CurrentForecast;
 import schleifenbauer.client.dto.OpenMeteoForecastResponse;
-import schleifenbauer.domain.WeatherMeasurement;
+import schleifenbauer.domain.Measurement;
 
 @ExtendWith(MockitoExtension.class)
 class WeatherMeasurementServiceTest {
@@ -31,12 +31,12 @@ class WeatherMeasurementServiceTest {
 
         WeatherMeasurementService service = new WeatherMeasurementService(weatherClient);
 
-        List<WeatherMeasurement> measurements = service.fetchMeasurements();
+        List<Measurement> measurements = service.fetchMeasurements();
 
         assertEquals(
                 List.of(
-                        new WeatherMeasurement("temperature", 18.5, LocalDateTime.parse("2026-05-24T00:00")),
-                        new WeatherMeasurement("humidity", 42.0, LocalDateTime.parse("2026-05-24T00:00"))),
+                        new Measurement("temperature", 18.5, LocalDateTime.parse("2026-05-24T00:00")),
+                        new Measurement("humidity", 42.0, LocalDateTime.parse("2026-05-24T00:00"))),
                 measurements);
     }
 }

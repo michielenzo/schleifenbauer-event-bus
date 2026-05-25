@@ -8,7 +8,7 @@ import com.google.inject.Singleton;
 import schleifenbauer.client.WeatherClient;
 import schleifenbauer.client.dto.CurrentForecast;
 import schleifenbauer.client.dto.OpenMeteoForecastResponse;
-import schleifenbauer.domain.WeatherMeasurement;
+import schleifenbauer.domain.Measurement;
 
 @Singleton
 public final class WeatherMeasurementService {
@@ -19,12 +19,12 @@ public final class WeatherMeasurementService {
         this.weatherClient = weatherClient;
     }
 
-    public List<WeatherMeasurement> fetchMeasurements() {
+    public List<Measurement> fetchMeasurements() {
         OpenMeteoForecastResponse forecast = weatherClient.fetchCurrentWeather();
         CurrentForecast current = forecast.current();
 
         return List.of(
-                new WeatherMeasurement("temperature", current.temperature(), current.timestamp()),
-                new WeatherMeasurement("humidity", current.relativeHumidity(), current.timestamp()));
+                new Measurement("temperature", current.temperature(), current.timestamp()),
+                new Measurement("humidity", current.relativeHumidity(), current.timestamp()));
     }
 }

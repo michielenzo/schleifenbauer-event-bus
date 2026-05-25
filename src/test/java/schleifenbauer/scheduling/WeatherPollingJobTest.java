@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import schleifenbauer.domain.WeatherMeasurement;
+import schleifenbauer.domain.Measurement;
 import schleifenbauer.infrastructure.eventbus.EventBus;
 import schleifenbauer.service.WeatherMeasurementService;
 
@@ -25,11 +25,11 @@ class WeatherPollingJobTest {
 
     @Test
     void publishesMeasurementsFromService() {
-        WeatherMeasurement temperatureMeasurement = new WeatherMeasurement(
+        Measurement temperatureMeasurement = new Measurement(
                 "temperature",
                 18.5,
                 LocalDateTime.parse("2026-05-24T00:00"));
-        WeatherMeasurement humidityMeasurement = new WeatherMeasurement(
+        Measurement humidityMeasurement = new Measurement(
                 "humidity",
                 42.0,
                 LocalDateTime.parse("2026-05-24T00:00"));
