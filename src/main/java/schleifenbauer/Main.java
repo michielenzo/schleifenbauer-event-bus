@@ -1,22 +1,17 @@
 package schleifenbauer;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
-import io.javalin.Javalin;
+import schleifenbauer.bootstrap.Application;
+import schleifenbauer.bootstrap.ApplicationModule;
 
-public class Main {
+public final class Main {
+    private Main() {
+    }
+
     public static void main(String[] args) {
-        System.out.println("Hello, world!");
-
-        var app = Javalin.create().start(7000);
-
-        app.get("/", ctx -> ctx.result("Hello World"));
-        
-        var scheduler = Executors.newScheduledThreadPool(1);
-
-        scheduler.scheduleAtFixedRate(() -> {
-            System.out.println("Running every 2 seconds");
-        }, 0, 2, TimeUnit.SECONDS);
+        Injector injector = Guice.createInjector(new ApplicationModule());
+        injector.getInstance(Application.class).start();
     }
 }
