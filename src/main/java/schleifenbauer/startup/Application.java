@@ -15,26 +15,26 @@ public final class Application {
     private final WebServer webServer;
     private final MeasurementLogger measurementLogger;
     private final MeasurementPersistenceSubscriber measurementPersistenceSubscriber;
-    private final StartupTask weatherPollingTask;
+    private final StartupTask startupTasks;
 
     @Inject
     public Application(
         WebServer webServer,
         MeasurementLogger measurementLogger,
         MeasurementPersistenceSubscriber measurementPersistenceSubscriber,
-        StartupTask weatherPollingTask
+        StartupTask startupTasks
     ) {
         this.webServer = webServer;
         this.measurementLogger = measurementLogger;
         this.measurementPersistenceSubscriber = measurementPersistenceSubscriber;
-        this.weatherPollingTask = weatherPollingTask;
+        this.startupTasks = startupTasks;
     }
 
     public void start() {
         webServer.start();
         measurementLogger.register();
         measurementPersistenceSubscriber.register();
-        weatherPollingTask.start();
+        startupTasks.start();
 
         LOGGER.info("Application started");
     }
