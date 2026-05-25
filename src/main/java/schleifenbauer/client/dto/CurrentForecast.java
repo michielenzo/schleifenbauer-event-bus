@@ -1,4 +1,4 @@
-package schleifenbauer.infrastructure.openmeteo;
+package schleifenbauer.client.dto;
 
 import java.time.LocalDateTime;
 

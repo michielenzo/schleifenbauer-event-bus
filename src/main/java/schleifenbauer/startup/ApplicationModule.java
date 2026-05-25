@@ -1,4 +1,4 @@
-package schleifenbauer.bootstrap;
+package schleifenbauer.startup;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
@@ -11,12 +11,11 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
-import schleifenbauer.application.StartupTask;
-import schleifenbauer.application.weather.WeatherClient;
-import schleifenbauer.application.weather.WeatherPollingTask;
+import schleifenbauer.client.OpenMeteoWeatherClient;
+import schleifenbauer.client.WeatherClient;
 import schleifenbauer.infrastructure.eventbus.EventBus;
 import schleifenbauer.infrastructure.eventbus.InMemoryEventBus;
-import schleifenbauer.infrastructure.openmeteo.OpenMeteoWeatherClient;
+import schleifenbauer.scheduling.WeatherPollingTask;
 
 public final class ApplicationModule extends AbstractModule {
     @Override

@@ -1,4 +1,4 @@
-package schleifenbauer.application.weather;
+package schleifenbauer.scheduling;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,8 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import schleifenbauer.domain.measurement.Measurement;
+import schleifenbauer.domain.WeatherMeasurement;
 import schleifenbauer.infrastructure.eventbus.EventBus;
+import schleifenbauer.service.WeatherMeasurementService;
 
 @ExtendWith(MockitoExtension.class)
 class WeatherPollingJobTest {
@@ -24,11 +25,11 @@ class WeatherPollingJobTest {
 
     @Test
     void publishesMeasurementsFromService() {
-        Measurement temperatureMeasurement = new Measurement(
+        WeatherMeasurement temperatureMeasurement = new WeatherMeasurement(
                 "temperature",
                 18.5,
                 LocalDateTime.parse("2026-05-24T00:00"));
-        Measurement humidityMeasurement = new Measurement(
+        WeatherMeasurement humidityMeasurement = new WeatherMeasurement(
                 "humidity",
                 42.0,
                 LocalDateTime.parse("2026-05-24T00:00"));

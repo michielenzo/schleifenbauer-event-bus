@@ -1,8 +1,8 @@
-package schleifenbauer.domain.measurement;
+package schleifenbauer.domain;
 
 import java.time.LocalDateTime;
 
-public record Measurement(
+public record WeatherMeasurement(
         String channel,
         double value,
         LocalDateTime timestamp) {

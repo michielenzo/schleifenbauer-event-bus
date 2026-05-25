@@ -1,13 +1,11 @@
-package schleifenbauer.bootstrap;
+package schleifenbauer.startup;
 
 import java.util.logging.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import schleifenbauer.application.StartupTask;
-import schleifenbauer.application.web.WebServer;
-import schleifenbauer.infrastructure.logging.MeasurementLogger;
+import schleifenbauer.infrastructure.eventbus.subscribers.MeasurementLogger;
 
 @Singleton
 public final class Application {

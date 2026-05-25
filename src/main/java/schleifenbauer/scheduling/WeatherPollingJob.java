@@ -1,4 +1,4 @@
-package schleifenbauer.application.weather;
+package schleifenbauer.scheduling;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -6,8 +6,9 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import schleifenbauer.domain.measurement.Measurement;
+import schleifenbauer.domain.WeatherMeasurement;
 import schleifenbauer.infrastructure.eventbus.EventBus;
+import schleifenbauer.service.WeatherMeasurementService;
 
 @Singleton
 public final class WeatherPollingJob implements Runnable {
@@ -25,7 +26,7 @@ public final class WeatherPollingJob implements Runnable {
     @Override
     public void run() {
         try {
-            for (Measurement measurement : weatherMeasurementService.fetchMeasurements()) {
+            for (WeatherMeasurement measurement : weatherMeasurementService.fetchMeasurements()) {
                 eventBus.publish(measurement);
             }
             LOGGER.info("Published weather measurements to event bus");

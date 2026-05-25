@@ -1,4 +1,4 @@
-package schleifenbauer.application;
+package schleifenbauer.startup;
 
 public interface StartupTask {
     void start();

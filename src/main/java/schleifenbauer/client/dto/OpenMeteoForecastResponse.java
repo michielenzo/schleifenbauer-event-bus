@@ -1,4 +1,4 @@
-package schleifenbauer.infrastructure.openmeteo;
+package schleifenbauer.client.dto;
 
 public record OpenMeteoForecastResponse(
         double latitude,

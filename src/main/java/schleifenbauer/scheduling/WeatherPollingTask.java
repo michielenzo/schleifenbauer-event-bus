@@ -1,4 +1,4 @@
-package schleifenbauer.application.weather;
+package schleifenbauer.scheduling;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import schleifenbauer.application.StartupTask;
+import schleifenbauer.startup.StartupTask;
 
 @Singleton
 public final class WeatherPollingTask implements StartupTask {

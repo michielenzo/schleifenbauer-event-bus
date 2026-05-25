@@ -1,4 +1,4 @@
-package schleifenbauer.infrastructure.openmeteo;
+package schleifenbauer.client;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import schleifenbauer.application.weather.WeatherClient;
+import schleifenbauer.client.dto.OpenMeteoForecastResponse;
 
 @Singleton
 public final class OpenMeteoWeatherClient implements WeatherClient {
