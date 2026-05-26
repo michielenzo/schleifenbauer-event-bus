@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import schleifenbauer.infrastructure.cronjob.MemoryCollectorTask;
+import schleifenbauer.infrastructure.cronjob.WeatherCollectorTask;
 import schleifenbauer.infrastructure.eventbus.subscribers.MeasurementLogger;
 import schleifenbauer.infrastructure.eventbus.subscribers.MeasurementPersistenceSubscriber;
 
@@ -15,26 +17,30 @@ public final class Application {
     private final WebServer webServer;
     private final MeasurementLogger measurementLogger;
     private final MeasurementPersistenceSubscriber measurementPersistenceSubscriber;
-    private final ApplicationStartupTask startupTasks;
+    private final WeatherCollectorTask weatherCollectorTask;
+    private final MemoryCollectorTask memoryCollectorTask;
 
     @Inject
     public Application(
         WebServer webServer,
         MeasurementLogger measurementLogger,
         MeasurementPersistenceSubscriber measurementPersistenceSubscriber,
-        ApplicationStartupTask startupTasks
+        WeatherCollectorTask weatherCollectorTask,
+        MemoryCollectorTask memoryCollectorTask
     ) {
         this.webServer = webServer;
         this.measurementLogger = measurementLogger;
         this.measurementPersistenceSubscriber = measurementPersistenceSubscriber;
-        this.startupTasks = startupTasks;
+        this.weatherCollectorTask = weatherCollectorTask;
+        this.memoryCollectorTask = memoryCollectorTask;
     }
 
     public void start() {
         webServer.start();
         measurementLogger.register();
         measurementPersistenceSubscriber.register();
-        startupTasks.start();
+        weatherCollectorTask.start();
+        memoryCollectorTask.start();
 
         LOGGER.info("Application started");
     }
