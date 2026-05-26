@@ -12,14 +12,14 @@ import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
 import schleifenbauer.service.MemoryMeasurementService;
 
 @Singleton
-public final class MemoryPollingJob implements Runnable {
-    private static final Logger LOGGER = Logger.getLogger(MemoryPollingJob.class.getName());
+public final class MemoryCollectorJob implements Runnable {
+    private static final Logger LOGGER = Logger.getLogger(MemoryCollectorJob.class.getName());
 
     private final MemoryMeasurementService memoryMeasurementService;
     private final IEventBus eventBus;
 
     @Inject
-    public MemoryPollingJob(MemoryMeasurementService memoryMeasurementService, IEventBus eventBus) {
+    public MemoryCollectorJob(MemoryMeasurementService memoryMeasurementService, IEventBus eventBus) {
         this.memoryMeasurementService = memoryMeasurementService;
         this.eventBus = eventBus;
     }

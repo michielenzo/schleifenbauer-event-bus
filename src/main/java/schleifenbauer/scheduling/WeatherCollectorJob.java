@@ -12,14 +12,14 @@ import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
 import schleifenbauer.service.WeatherMeasurementService;
 
 @Singleton
-public final class WeatherPollingJob implements Runnable {
-    private static final Logger LOGGER = Logger.getLogger(WeatherPollingJob.class.getName());
+public final class WeatherCollectorJob implements Runnable {
+    private static final Logger LOGGER = Logger.getLogger(WeatherCollectorJob.class.getName());
 
     private final WeatherMeasurementService weatherMeasurementService;
     private final IEventBus eventBus;
 
     @Inject
-    public WeatherPollingJob(WeatherMeasurementService weatherMeasurementService, IEventBus eventBus) {
+    public WeatherCollectorJob(WeatherMeasurementService weatherMeasurementService, IEventBus eventBus) {
         this.weatherMeasurementService = weatherMeasurementService;
         this.eventBus = eventBus;
     }

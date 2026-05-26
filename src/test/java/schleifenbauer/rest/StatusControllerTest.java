@@ -11,26 +11,26 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import io.javalin.http.Context;
 import schleifenbauer.rest.dto.ErrorResponseDto;
 import schleifenbauer.rest.dto.StatusResponseDto;
-import schleifenbauer.scheduling.MemoryPollingTask;
-import schleifenbauer.scheduling.PollingTaskState;
-import schleifenbauer.scheduling.WeatherPollingTask;
+import schleifenbauer.scheduling.CollectorTaskState;
+import schleifenbauer.scheduling.MemoryCollectorTask;
+import schleifenbauer.scheduling.WeatherCollectorTask;
 
 @ExtendWith(MockitoExtension.class)
 class StatusControllerTest {
     @Mock
-    private WeatherPollingTask weatherPollingTask;
+    private WeatherCollectorTask weatherCollectorTask;
 
     @Mock
-    private MemoryPollingTask memoryPollingTask;
+    private MemoryCollectorTask memoryCollectorTask;
 
     @Mock
     private Context context;
 
     @Test
     void returnsStatusForEachPollingJob() {
-        StatusController controller = new StatusController(weatherPollingTask, memoryPollingTask);
-        when(weatherPollingTask.status()).thenReturn(PollingTaskState.RUNNING);
-        when(memoryPollingTask.status()).thenReturn(PollingTaskState.STOPPED);
+        StatusController controller = new StatusController(weatherCollectorTask, memoryCollectorTask);
+        when(weatherCollectorTask.status()).thenReturn(CollectorTaskState.RUNNING);
+        when(memoryCollectorTask.status()).thenReturn(CollectorTaskState.STOPPED);
 
         controller.getStatus(context);
 
@@ -40,8 +40,8 @@ class StatusControllerTest {
 
     @Test
     void returnsErrorResponseDtoWhenStatusFails() {
-        StatusController controller = new StatusController(weatherPollingTask, memoryPollingTask);
-        when(weatherPollingTask.status()).thenThrow(new IllegalStateException("boom"));
+        StatusController controller = new StatusController(weatherCollectorTask, memoryCollectorTask);
+        when(weatherCollectorTask.status()).thenThrow(new IllegalStateException("boom"));
 
         controller.getStatus(context);
 

@@ -15,7 +15,7 @@ import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
 import schleifenbauer.service.MemoryMeasurementService;
 
 @ExtendWith(MockitoExtension.class)
-class MemoryPollingJobTest {
+class MemoryCollectorJobTest {
     @Mock
     private MemoryMeasurementService memoryMeasurementService;
 
@@ -30,7 +30,7 @@ class MemoryPollingJobTest {
                 LocalDateTime.parse("2026-05-25T21:00:00"));
         when(memoryMeasurementService.measure()).thenReturn(measurement);
 
-        MemoryPollingJob job = new MemoryPollingJob(memoryMeasurementService, eventBus);
+        MemoryCollectorJob job = new MemoryCollectorJob(memoryMeasurementService, eventBus);
 
         job.run();
 

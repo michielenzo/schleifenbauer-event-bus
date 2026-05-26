@@ -1,6 +1,6 @@
 package schleifenbauer.scheduling;
 
-public enum PollingTaskState {
+public enum CollectorTaskState {
     RUNNING,
     STOPPED
 }

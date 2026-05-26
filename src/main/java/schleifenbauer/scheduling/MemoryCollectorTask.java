@@ -8,22 +8,22 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public final class MemoryPollingTask extends PollingTask {
-    private static final Logger LOGGER = Logger.getLogger(MemoryPollingTask.class.getName());
+public final class MemoryCollectorTask extends CollectorTask {
+    private static final Logger LOGGER = Logger.getLogger(MemoryCollectorTask.class.getName());
     private static final long POLLING_INTERVAL_SECONDS = 10;
 
     private final ScheduledExecutorService scheduler;
-    private final MemoryPollingJob memoryPollingJob;
+    private final MemoryCollectorJob memoryCollectorJob;
 
     @Inject
-    public MemoryPollingTask(ScheduledExecutorService scheduler, MemoryPollingJob memoryPollingJob) {
+    public MemoryCollectorTask(ScheduledExecutorService scheduler, MemoryCollectorJob memoryCollectorJob) {
         this.scheduler = scheduler;
-        this.memoryPollingJob = memoryPollingJob;
+        this.memoryCollectorJob = memoryCollectorJob;
     }
 
     @Override
     public void start() {
-        setScheduledFuture(scheduler.scheduleAtFixedRate(memoryPollingJob, 0, POLLING_INTERVAL_SECONDS, TimeUnit.SECONDS));
+        setScheduledFuture(scheduler.scheduleAtFixedRate(memoryCollectorJob, 0, POLLING_INTERVAL_SECONDS, TimeUnit.SECONDS));
         LOGGER.info("Scheduled memory polling every 10 seconds");
     }
 }

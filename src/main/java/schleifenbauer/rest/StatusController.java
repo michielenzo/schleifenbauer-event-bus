@@ -6,26 +6,26 @@ import com.google.inject.Singleton;
 import io.javalin.http.Context;
 import schleifenbauer.rest.dto.ErrorResponseDto;
 import schleifenbauer.rest.dto.StatusResponseDto;
-import schleifenbauer.scheduling.MemoryPollingTask;
-import schleifenbauer.scheduling.WeatherPollingTask;
+import schleifenbauer.scheduling.MemoryCollectorTask;
+import schleifenbauer.scheduling.WeatherCollectorTask;
 
 @Singleton
 public final class StatusController {
-    private final WeatherPollingTask weatherPollingTask;
-    private final MemoryPollingTask memoryPollingTask;
+    private final WeatherCollectorTask weatherCollectorTask;
+    private final MemoryCollectorTask memoryCollectorTask;
 
     @Inject
-    public StatusController(WeatherPollingTask weatherPollingTask, MemoryPollingTask memoryPollingTask) {
-        this.weatherPollingTask = weatherPollingTask;
-        this.memoryPollingTask = memoryPollingTask;
+    public StatusController(WeatherCollectorTask weatherCollectorTask, MemoryCollectorTask memoryCollectorTask) {
+        this.weatherCollectorTask = weatherCollectorTask;
+        this.memoryCollectorTask = memoryCollectorTask;
     }
 
     public void getStatus(Context context) {
         try {
             context.status(200);
             context.json(new StatusResponseDto(
-                    weatherPollingTask.status().name(),
-                    memoryPollingTask.status().name())
+                    weatherCollectorTask.status().name(),
+                    memoryCollectorTask.status().name())
             );
         } catch (Exception exception) {
             context.status(500);

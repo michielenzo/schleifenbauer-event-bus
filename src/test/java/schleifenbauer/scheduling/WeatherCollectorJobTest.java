@@ -17,7 +17,7 @@ import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
 import schleifenbauer.service.WeatherMeasurementService;
 
 @ExtendWith(MockitoExtension.class)
-class WeatherPollingJobTest {
+class WeatherCollectorJobTest {
     @Mock
     private WeatherMeasurementService weatherMeasurementService;
 
@@ -36,7 +36,7 @@ class WeatherPollingJobTest {
                 LocalDateTime.parse("2026-05-24T00:00"));
         when(weatherMeasurementService.fetchMeasurements()).thenReturn(List.of(temperatureMeasurement, humidityMeasurement));
 
-        WeatherPollingJob job = new WeatherPollingJob(weatherMeasurementService, eventBus);
+        WeatherCollectorJob job = new WeatherCollectorJob(weatherMeasurementService, eventBus);
 
         job.run();
 

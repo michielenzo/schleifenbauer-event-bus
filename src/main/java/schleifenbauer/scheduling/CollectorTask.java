@@ -2,15 +2,15 @@ package schleifenbauer.scheduling;
 
 import java.util.concurrent.ScheduledFuture;
 
-public abstract class PollingTask {
+public abstract class CollectorTask {
     private ScheduledFuture<?> scheduledFuture;
 
     public abstract void start();
 
-    public PollingTaskState status() {
+    public CollectorTaskState status() {
         return scheduledFuture != null && !scheduledFuture.isCancelled() && !scheduledFuture.isDone()
-                ? PollingTaskState.RUNNING
-                : PollingTaskState.STOPPED;
+                ? CollectorTaskState.RUNNING
+                : CollectorTaskState.STOPPED;
     }
 
     protected void setScheduledFuture(ScheduledFuture<?> scheduledFuture) {
