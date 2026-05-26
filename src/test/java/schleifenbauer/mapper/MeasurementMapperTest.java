@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import schleifenbauer.domain.Measurement;
 import schleifenbauer.persistence.entity.MeasurementEntity;
+import schleifenbauer.rest.dto.MeasurementDto;
 
 class MeasurementMapperTest {
     @Test
@@ -42,5 +43,21 @@ class MeasurementMapperTest {
                 "memory/usage",
                 72.3,
                 LocalDateTime.parse("2026-05-24T01:00:00")), measurement);
+    }
+
+    @Test
+    void mapsDomainMeasurementToDto() {
+        MeasurementMapper mapper = new MeasurementMapper();
+        Measurement measurement = new Measurement(
+                "weather/temperature",
+                18.5,
+                LocalDateTime.parse("2026-05-24T12:30:00"));
+
+        MeasurementDto measurementDto = mapper.toDto(measurement);
+
+        assertEquals(new MeasurementDto(
+                "weather/temperature",
+                18.5,
+                LocalDateTime.parse("2026-05-24T12:30:00")), measurementDto);
     }
 }

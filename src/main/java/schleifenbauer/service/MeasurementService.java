@@ -9,7 +9,8 @@ import com.google.inject.Singleton;
 import schleifenbauer.domain.Measurement;
 import schleifenbauer.mapper.MeasurementMapper;
 import schleifenbauer.persistence.MeasurementRepository;
-import schleifenbauer.persistence.entity.MeasurementEntity;
+import schleifenbauer.rest.dto.MeasurementDto;
+import schleifenbauer.rest.dto.MeasurementsResponseDto;
 
 @Singleton
 public final class MeasurementService {
@@ -28,17 +29,23 @@ public final class MeasurementService {
         measurementRepository.save(measurementMapper.toEntity(measurement));
     }
 
-    public List<Measurement> getLatestMeasurements() throws SQLException {
-        return measurementRepository.findLatest(LATEST_MEASUREMENTS_SIZE)
+    public MeasurementsResponseDto getLatestMeasurements() throws SQLException {
+        List<MeasurementDto> measurements = measurementRepository.findLatest(LATEST_MEASUREMENTS_SIZE)
                 .stream()
                 .map(measurementMapper::toDomain)
+                .map(measurementMapper::toDto)
                 .toList();
+
+        return new MeasurementsResponseDto(measurements);
     }
 
-    public List<Measurement> getLatestMeasurementsByChannel(String channel) throws SQLException {
-        return measurementRepository.findLatestByChannel(channel, LATEST_MEASUREMENTS_SIZE)
+    public MeasurementsResponseDto getLatestMeasurementsByChannel(String channel) throws SQLException {
+        List<MeasurementDto> measurements = measurementRepository.findLatestByChannel(channel, LATEST_MEASUREMENTS_SIZE)
                 .stream()
                 .map(measurementMapper::toDomain)
+                .map(measurementMapper::toDto)
                 .toList();
+
+        return new MeasurementsResponseDto(measurements);
     }
 }

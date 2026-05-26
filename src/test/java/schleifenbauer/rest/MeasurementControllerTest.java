@@ -28,43 +28,35 @@ class MeasurementControllerTest {
 
     @Test
     void returnsLatestMeasurementsUsingResponseDto() throws SQLException {
-        Measurement measurement = new Measurement(
-            "weather/temperature",
-            18.5,
-            LocalDateTime.parse("2026-05-24T12:30:00")
-        );
+        MeasurementsResponseDto response = new MeasurementsResponseDto(List.of(new MeasurementDto(
+                "weather/temperature",
+                18.5,
+                LocalDateTime.parse("2026-05-24T12:30:00"))));
 
         MeasurementController controller = new MeasurementController(measurementService);
-        when(measurementService.getLatestMeasurements()).thenReturn(List.of(measurement));
+        when(measurementService.getLatestMeasurements()).thenReturn(response);
 
         controller.getLatestMeasurements(context);
 
         verify(context).status(200);
-        verify(context).json(new MeasurementsResponseDto(List.of(new MeasurementDto(
-            "weather/temperature",
-            18.5,
-            LocalDateTime.parse("2026-05-24T12:30:00"))))
-        );
+        verify(context).json(response);
     }
 
     @Test
     void returnsLatestMeasurementsFilteredByChannel() throws SQLException {
-        Measurement measurement = new Measurement(
+        MeasurementsResponseDto response = new MeasurementsResponseDto(List.of(new MeasurementDto(
                 "weather/temperature",
                 18.5,
-                LocalDateTime.parse("2026-05-24T12:30:00"));
+                LocalDateTime.parse("2026-05-24T12:30:00"))));
         MeasurementController controller = new MeasurementController(measurementService);
         when(context.queryParam("channel")).thenReturn("weather/temperature");
-        when(measurementService.getLatestMeasurementsByChannel("weather/temperature")).thenReturn(List.of(measurement));
+        when(measurementService.getLatestMeasurementsByChannel("weather/temperature")).thenReturn(response);
 
         controller.getLatestMeasurements(context);
 
         verify(measurementService).getLatestMeasurementsByChannel("weather/temperature");
         verify(context).status(200);
-        verify(context).json(new MeasurementsResponseDto(List.of(new MeasurementDto(
-                "weather/temperature",
-                18.5,
-                LocalDateTime.parse("2026-05-24T12:30:00")))));
+        verify(context).json(response);
     }
 
     @Test

@@ -4,6 +4,7 @@ import com.google.inject.Singleton;
 
 import schleifenbauer.domain.Measurement;
 import schleifenbauer.persistence.entity.MeasurementEntity;
+import schleifenbauer.rest.dto.MeasurementDto;
 
 @Singleton
 public final class MeasurementMapper {
@@ -20,5 +21,12 @@ public final class MeasurementMapper {
                 measurementEntity.channel(),
                 measurementEntity.value(),
                 measurementEntity.timestamp());
+    }
+
+    public MeasurementDto toDto(Measurement measurement) {
+        return new MeasurementDto(
+                measurement.channel(),
+                measurement.value(),
+                measurement.timestamp());
     }
 }

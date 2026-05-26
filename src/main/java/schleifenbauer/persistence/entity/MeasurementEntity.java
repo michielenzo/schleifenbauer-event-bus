@@ -6,5 +6,5 @@ public record MeasurementEntity(
         Long id,
         String channel,
         double value,
-        LocalDateTime timestamp) {
-}
+        LocalDateTime timestamp
+) {}

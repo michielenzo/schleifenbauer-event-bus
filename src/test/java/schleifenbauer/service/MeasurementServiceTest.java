@@ -17,6 +17,8 @@ import schleifenbauer.domain.Measurement;
 import schleifenbauer.mapper.MeasurementMapper;
 import schleifenbauer.persistence.MeasurementRepository;
 import schleifenbauer.persistence.entity.MeasurementEntity;
+import schleifenbauer.rest.dto.MeasurementDto;
+import schleifenbauer.rest.dto.MeasurementsResponseDto;
 
 @ExtendWith(MockitoExtension.class)
 class MeasurementServiceTest {
@@ -53,7 +55,7 @@ class MeasurementServiceTest {
     }
 
     @Test
-    void mapsLatestMeasurementEntitiesToDomainMeasurements() throws SQLException {
+    void mapsLatestMeasurementEntitiesToResponseDto() throws SQLException {
         MeasurementService service = new MeasurementService(measurementRepository, measurementMapper);
         MeasurementEntity measurementEntity = new MeasurementEntity(
                 1L,
@@ -64,16 +66,21 @@ class MeasurementServiceTest {
                 "memory/usage",
                 72.3,
                 LocalDateTime.parse("2026-05-24T01:00:00"));
+        MeasurementDto measurementDto = new MeasurementDto(
+                "memory/usage",
+                72.3,
+                LocalDateTime.parse("2026-05-24T01:00:00"));
         when(measurementRepository.findLatest(50)).thenReturn(List.of(measurementEntity));
         when(measurementMapper.toDomain(measurementEntity)).thenReturn(measurement);
+        when(measurementMapper.toDto(measurement)).thenReturn(measurementDto);
 
-        List<Measurement> measurements = service.getLatestMeasurements();
+        MeasurementsResponseDto response = service.getLatestMeasurements();
 
-        org.junit.jupiter.api.Assertions.assertEquals(List.of(measurement), measurements);
+        org.junit.jupiter.api.Assertions.assertEquals(new MeasurementsResponseDto(List.of(measurementDto)), response);
     }
 
     @Test
-    void mapsFilteredMeasurementEntitiesToDomainMeasurements() throws SQLException {
+    void mapsFilteredMeasurementEntitiesToResponseDto() throws SQLException {
         MeasurementService service = new MeasurementService(measurementRepository, measurementMapper);
         MeasurementEntity measurementEntity = new MeasurementEntity(
                 2L,
@@ -84,11 +91,16 @@ class MeasurementServiceTest {
                 "weather/temperature",
                 18.5,
                 LocalDateTime.parse("2026-05-24T12:30:00"));
+        MeasurementDto measurementDto = new MeasurementDto(
+                "weather/temperature",
+                18.5,
+                LocalDateTime.parse("2026-05-24T12:30:00"));
         when(measurementRepository.findLatestByChannel("weather/temperature", 50)).thenReturn(List.of(measurementEntity));
         when(measurementMapper.toDomain(measurementEntity)).thenReturn(measurement);
+        when(measurementMapper.toDto(measurement)).thenReturn(measurementDto);
 
-        List<Measurement> measurements = service.getLatestMeasurementsByChannel("weather/temperature");
+        MeasurementsResponseDto response = service.getLatestMeasurementsByChannel("weather/temperature");
 
-        org.junit.jupiter.api.Assertions.assertEquals(List.of(measurement), measurements);
+        org.junit.jupiter.api.Assertions.assertEquals(new MeasurementsResponseDto(List.of(measurementDto)), response);
     }
 }
