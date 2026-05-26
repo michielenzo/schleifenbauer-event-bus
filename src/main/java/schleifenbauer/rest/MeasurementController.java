@@ -32,7 +32,7 @@ public final class MeasurementController {
 
             context.status(200);
             context.json(response);
-        } catch (Exception exception) { 
+        } catch (Exception exception) {
             context.status(500);
             context.json(new ErrorResponseDto("An internal server error occurred."));
         }
