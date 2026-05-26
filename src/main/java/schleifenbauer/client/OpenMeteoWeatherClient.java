@@ -33,12 +33,12 @@ public final class OpenMeteoWeatherClient implements WeatherClient {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() < 200 || response.statusCode() >= 300) {
-                throw new IllegalStateException("Open-Meteo request failed with status " + response.statusCode());
+                throw new IllegalStateException("OpenMeteo request failed with status " + response.statusCode());
             }
 
             return objectMapper.readValue(response.body(), OpenMeteoForecastResponse.class);
         } catch (IOException exception) {
-            throw new UncheckedIOException("Unable to deserialize Open-Meteo response", exception);
+            throw new UncheckedIOException("Unable to deserialize OpenMeteo response", exception);
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
             throw new IllegalStateException("Open-Meteo request was interrupted", exception);
