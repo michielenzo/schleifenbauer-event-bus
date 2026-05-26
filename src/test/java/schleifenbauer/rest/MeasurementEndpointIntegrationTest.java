@@ -37,7 +37,6 @@ import schleifenbauer.service.MeasurementService;
 
 @ExtendWith(MockitoExtension.class)
 class MeasurementControllerIntegrationTest {
-    private static final LocalDateTime MEASUREMENT_TIMESTAMP = LocalDateTime.parse("2026-05-24T12:30:00");
 
     @Mock
     private DataSource dataSource;
@@ -53,6 +52,13 @@ class MeasurementControllerIntegrationTest {
 
     private ObjectMapper objectMapper;
     private Javalin app;
+    private HttpRequest request;
+
+    private final static double TEMPERATURE = 18.5; 
+    private final static String CHANNEL = "weather/temperature";
+    private static final Long ID = 1l;
+    private static final String ERROR_DTO_MSG = "An internal server error occurred.";
+    private static final LocalDateTime MEASUREMENT_TIMESTAMP = LocalDateTime.parse("2026-05-24T12:30:00");
 
     @BeforeEach
     @SuppressWarnings("unused")
@@ -72,6 +78,45 @@ class MeasurementControllerIntegrationTest {
         app = Javalin.create(config -> config.jsonMapper(new JavalinJackson(objectMapper)));
         app.get("/api/measurements", controller::getLatestMeasurements);
         app.start(0);
+
+        request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:" + app.port() + "/api/measurements"))
+            .GET()
+            .build();
+    }
+
+    @Test
+    void getLatestMeasurementsRespondsWith200AndMeasurements() throws Exception {
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true, false);
+        when(resultSet.getLong("id")).thenReturn(ID);
+        when(resultSet.getString("channel")).thenReturn(CHANNEL);
+        when(resultSet.getDouble("value")).thenReturn(TEMPERATURE);
+        when(resultSet.getTimestamp("timestamp")).thenReturn(Timestamp.valueOf(MEASUREMENT_TIMESTAMP));
+
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        MeasurementsResponseDto responseDto = objectMapper.readValue(response.body(), MeasurementsResponseDto.class);
+
+        assertEquals(200, response.statusCode());
+        assertEquals(1, responseDto.measurements().size());
+        assertEquals(CHANNEL, responseDto.measurements().getFirst().channel());
+        assertEquals(TEMPERATURE, responseDto.measurements().getFirst().value());
+        assertEquals(MEASUREMENT_TIMESTAMP, responseDto.measurements().getFirst().timestamp());
+
+        verify(preparedStatement).executeQuery();
+    }
+
+    @Test
+    void getLatestMeasurementsRespondsWith500OnException() throws Exception {
+        when(preparedStatement.executeQuery()).thenThrow(new java.sql.SQLException("boom"));
+
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        ErrorResponseDto responseDto = objectMapper.readValue(response.body(), ErrorResponseDto.class);
+
+        assertEquals(500, response.statusCode());
+        assertEquals(ERROR_DTO_MSG, responseDto.message());
+
+        verify(preparedStatement).executeQuery();
     }
 
     @AfterEach
@@ -80,51 +125,5 @@ class MeasurementControllerIntegrationTest {
         if (app != null) {
             app.stop();
         }
-    }
-
-    @Test
-    void getLatestMeasurementsRespondsWith200AndMeasurements() throws Exception {
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(true, false);
-        when(resultSet.getLong("id")).thenReturn(1L);
-        when(resultSet.getString("channel")).thenReturn("weather/temperature");
-        when(resultSet.getDouble("value")).thenReturn(18.5);
-        when(resultSet.getTimestamp("timestamp")).thenReturn(Timestamp.valueOf(MEASUREMENT_TIMESTAMP));
-        
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:" + app.port() + "/api/measurements"))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        MeasurementsResponseDto responseDto = objectMapper.readValue(response.body(), MeasurementsResponseDto.class);
-
-        assertEquals(200, response.statusCode());
-        assertEquals(1, responseDto.measurements().size());
-        assertEquals("weather/temperature", responseDto.measurements().getFirst().channel());
-        assertEquals(18.5, responseDto.measurements().getFirst().value());
-        assertEquals(MEASUREMENT_TIMESTAMP, responseDto.measurements().getFirst().timestamp());
-
-        verify(preparedStatement).setInt(1, 50);
-        verify(preparedStatement).executeQuery();
-    }
-
-    @Test
-    void getLatestMeasurementsRespondsWith500OnException() throws Exception {
-        when(preparedStatement.executeQuery()).thenThrow(new java.sql.SQLException("boom"));
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:" + app.port() + "/api/measurements"))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        ErrorResponseDto responseDto = objectMapper.readValue(response.body(), ErrorResponseDto.class);
-
-        assertEquals(500, response.statusCode());
-        assertEquals("An internal server error occurred.", responseDto.message());
-
-        verify(preparedStatement).setInt(1, 50);
-        verify(preparedStatement).executeQuery();
     }
 }

@@ -1,8 +1,5 @@
 package schleifenbauer.rest;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,6 +7,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.javalin.http.Context;
@@ -30,9 +29,11 @@ class MeasurementControllerTest {
     @Test
     void returnsLatestMeasurementsUsingResponseDto() throws SQLException {
         Measurement measurement = new Measurement(
-                "weather/temperature",
-                18.5,
-                LocalDateTime.parse("2026-05-24T12:30:00"));
+            "weather/temperature",
+            18.5,
+            LocalDateTime.parse("2026-05-24T12:30:00")
+        );
+
         MeasurementController controller = new MeasurementController(measurementService);
         when(measurementService.getLatestMeasurements()).thenReturn(List.of(measurement));
 
@@ -40,9 +41,10 @@ class MeasurementControllerTest {
 
         verify(context).status(200);
         verify(context).json(new MeasurementsResponseDto(List.of(new MeasurementDto(
-                "weather/temperature",
-                18.5,
-                LocalDateTime.parse("2026-05-24T12:30:00")))));
+            "weather/temperature",
+            18.5,
+            LocalDateTime.parse("2026-05-24T12:30:00"))))
+        );
     }
 
     @Test
