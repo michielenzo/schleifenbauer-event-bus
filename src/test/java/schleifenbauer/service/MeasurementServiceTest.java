@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import schleifenbauer.domain.Measurement;
+import schleifenbauer.mapper.MeasurementMapper;
 import schleifenbauer.persistence.MeasurementRepository;
 import schleifenbauer.persistence.entity.MeasurementEntity;
 
@@ -22,13 +23,22 @@ class MeasurementServiceTest {
     @Mock
     private MeasurementRepository measurementRepository;
 
+    @Mock
+    private MeasurementMapper measurementMapper;
+
     @Test
     void mapsDomainMeasurementToEntityBeforeSaving() throws SQLException {
         Measurement measurement = new Measurement(
                 "temperature",
                 18.5,
                 LocalDateTime.parse("2026-05-24T00:00"));
-        MeasurementService service = new MeasurementService(measurementRepository);
+        MeasurementEntity measurementEntity = new MeasurementEntity(
+                null,
+                "temperature",
+                18.5,
+                LocalDateTime.parse("2026-05-24T00:00"));
+        MeasurementService service = new MeasurementService(measurementRepository, measurementMapper);
+        when(measurementMapper.toEntity(measurement)).thenReturn(measurementEntity);
 
         service.save(measurement);
 
@@ -44,37 +54,41 @@ class MeasurementServiceTest {
 
     @Test
     void mapsLatestMeasurementEntitiesToDomainMeasurements() throws SQLException {
-        MeasurementService service = new MeasurementService(measurementRepository);
+        MeasurementService service = new MeasurementService(measurementRepository, measurementMapper);
         MeasurementEntity measurementEntity = new MeasurementEntity(
                 1L,
                 "memory/usage",
                 72.3,
                 LocalDateTime.parse("2026-05-24T01:00:00"));
+        Measurement measurement = new Measurement(
+                "memory/usage",
+                72.3,
+                LocalDateTime.parse("2026-05-24T01:00:00"));
         when(measurementRepository.findLatest(50)).thenReturn(List.of(measurementEntity));
+        when(measurementMapper.toDomain(measurementEntity)).thenReturn(measurement);
 
         List<Measurement> measurements = service.getLatestMeasurements();
 
-        org.junit.jupiter.api.Assertions.assertEquals(List.of(new Measurement(
-                "memory/usage",
-                72.3,
-                LocalDateTime.parse("2026-05-24T01:00:00"))), measurements);
+        org.junit.jupiter.api.Assertions.assertEquals(List.of(measurement), measurements);
     }
 
     @Test
     void mapsFilteredMeasurementEntitiesToDomainMeasurements() throws SQLException {
-        MeasurementService service = new MeasurementService(measurementRepository);
+        MeasurementService service = new MeasurementService(measurementRepository, measurementMapper);
         MeasurementEntity measurementEntity = new MeasurementEntity(
                 2L,
                 "weather/temperature",
                 18.5,
                 LocalDateTime.parse("2026-05-24T12:30:00"));
+        Measurement measurement = new Measurement(
+                "weather/temperature",
+                18.5,
+                LocalDateTime.parse("2026-05-24T12:30:00"));
         when(measurementRepository.findLatestByChannel("weather/temperature", 50)).thenReturn(List.of(measurementEntity));
+        when(measurementMapper.toDomain(measurementEntity)).thenReturn(measurement);
 
         List<Measurement> measurements = service.getLatestMeasurementsByChannel("weather/temperature");
 
-        org.junit.jupiter.api.Assertions.assertEquals(List.of(new Measurement(
-                "weather/temperature",
-                18.5,
-                LocalDateTime.parse("2026-05-24T12:30:00"))), measurements);
+        org.junit.jupiter.api.Assertions.assertEquals(List.of(measurement), measurements);
     }
 }

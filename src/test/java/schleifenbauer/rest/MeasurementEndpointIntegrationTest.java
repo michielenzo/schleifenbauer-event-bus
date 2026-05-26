@@ -30,6 +30,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.javalin.Javalin;
 import io.javalin.plugin.json.JavalinJackson;
+import schleifenbauer.mapper.MeasurementMapper;
 import schleifenbauer.persistence.MeasurementRepository;
 import schleifenbauer.rest.dto.ErrorResponseDto;
 import schleifenbauer.rest.dto.MeasurementsResponseDto;
@@ -72,7 +73,7 @@ class MeasurementControllerIntegrationTest {
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         MeasurementRepository measurementRepository = new MeasurementRepository(dataSource);
-        MeasurementService measurementService = new MeasurementService(measurementRepository);
+        MeasurementService measurementService = new MeasurementService(measurementRepository, new MeasurementMapper());
         MeasurementController controller = new MeasurementController(measurementService);
 
         app = Javalin.create(config -> config.jsonMapper(new JavalinJackson(objectMapper)));

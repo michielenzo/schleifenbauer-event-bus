@@ -29,9 +29,7 @@ public final class OpenMeteoWeatherClient implements WeatherClient {
 
     @Override
     public OpenMeteoForecastResponse fetchCurrentWeather() {
-        HttpRequest request = HttpRequest.newBuilder(FORECAST_URI)
-                .GET()
-                .build();
+        HttpRequest request = HttpRequest.newBuilder(FORECAST_URI).GET().build();
 
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
