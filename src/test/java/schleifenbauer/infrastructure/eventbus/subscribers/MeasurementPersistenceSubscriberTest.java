@@ -13,13 +13,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import schleifenbauer.domain.Measurement;
-import schleifenbauer.infrastructure.eventbus.EventBus;
+import schleifenbauer.domain.MeasurementChannels;
+import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
+import schleifenbauer.infrastructure.eventbus.MeasurementEventBus;
 import schleifenbauer.service.MeasurementService;
 
 @ExtendWith(MockitoExtension.class)
 class MeasurementPersistenceSubscriberTest {
     @Mock
-    private EventBus eventBus;
+    private MeasurementEventBus eventBus;
 
     @Mock
     private MeasurementService measurementService;
@@ -30,7 +32,9 @@ class MeasurementPersistenceSubscriberTest {
 
         subscriber.register();
 
-        verify(eventBus).subscribe(org.mockito.ArgumentMatchers.eq(Measurement.class), org.mockito.ArgumentMatchers.any());
+        verify(eventBus).subscribe(org.mockito.ArgumentMatchers.eq(MeasurementChannels.TEMPERATURE), org.mockito.ArgumentMatchers.any());
+        verify(eventBus).subscribe(org.mockito.ArgumentMatchers.eq(MeasurementChannels.HUMIDITY), org.mockito.ArgumentMatchers.any());
+        verify(eventBus).subscribe(org.mockito.ArgumentMatchers.eq(MeasurementChannels.MEMORY_FREE_BYTES), org.mockito.ArgumentMatchers.any());
     }
 
     @Test
@@ -41,15 +45,16 @@ class MeasurementPersistenceSubscriberTest {
                 18.5,
                 LocalDateTime.parse("2026-05-24T00:00"));
         MeasurementPersistenceSubscriber subscriber = new MeasurementPersistenceSubscriber(eventBus, measurementService);
+        MeasurementEvent event = new MeasurementEvent(measurement);
         doThrow(new SQLException("boom")).when(measurementService).save(measurement);
 
         subscriber.register();
 
-        org.mockito.ArgumentCaptor<Consumer<Measurement>> captor =
-                org.mockito.ArgumentCaptor.forClass((Class<Consumer<Measurement>>) (Class<?>) Consumer.class);
-        verify(eventBus).subscribe(org.mockito.ArgumentMatchers.eq(Measurement.class), captor.capture());
+        org.mockito.ArgumentCaptor<Consumer<MeasurementEvent>> captor =
+                org.mockito.ArgumentCaptor.forClass((Class<Consumer<MeasurementEvent>>) (Class<?>) Consumer.class);
+        verify(eventBus).subscribe(org.mockito.ArgumentMatchers.eq(MeasurementChannels.TEMPERATURE), captor.capture());
 
-        captor.getValue().accept(measurement);
+        captor.getValue().accept(event);
 
         verify(measurementService).save(measurement);
     }

@@ -10,7 +10,8 @@ import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import schleifenbauer.domain.Measurement;
-import schleifenbauer.infrastructure.eventbus.EventBus;
+import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
+import schleifenbauer.infrastructure.eventbus.MeasurementEventBus;
 import schleifenbauer.service.MemoryMeasurementService;
 
 @ExtendWith(MockitoExtension.class)
@@ -19,7 +20,7 @@ class MemoryPollingJobTest {
     private MemoryMeasurementService memoryMeasurementService;
 
     @Mock
-    private EventBus eventBus;
+    private MeasurementEventBus eventBus;
 
     @Test
     void publishesMeasurementFromService() {
@@ -33,6 +34,6 @@ class MemoryPollingJobTest {
 
         job.run();
 
-        verify(eventBus).publish(measurement);
+        verify(eventBus).publish(new MeasurementEvent(measurement));
     }
 }

@@ -6,11 +6,11 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import schleifenbauer.domain.Measurement;
+import schleifenbauer.domain.MeasurementChannels;
 import schleifenbauer.provider.MemoryUsageProvider;
 
 @Singleton
 public final class MemoryMeasurementService {
-    private static final String CHANNEL = "memory_free_bytes";
     private final MemoryUsageProvider memoryUsageProvider;
 
     @Inject
@@ -19,6 +19,6 @@ public final class MemoryMeasurementService {
     }
 
     public Measurement measure() {
-        return new Measurement(CHANNEL, memoryUsageProvider.freeMemoryBytes(), LocalDateTime.now());
+        return new Measurement(MeasurementChannels.MEMORY_FREE_BYTES, memoryUsageProvider.freeMemoryBytes(), LocalDateTime.now());
     }
 }

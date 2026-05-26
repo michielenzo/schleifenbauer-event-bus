@@ -7,30 +7,33 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import schleifenbauer.domain.Measurement;
-import schleifenbauer.infrastructure.eventbus.EventBus;
+import schleifenbauer.domain.MeasurementChannels;
+import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
+import schleifenbauer.infrastructure.eventbus.MeasurementEventBus;
 import schleifenbauer.service.MeasurementService;
 
 @Singleton
 public final class MeasurementPersistenceSubscriber {
     private static final Logger LOGGER = Logger.getLogger(MeasurementPersistenceSubscriber.class.getName());
 
-    private final EventBus eventBus;
+    private final MeasurementEventBus eventBus;
     private final MeasurementService measurementService;
 
     @Inject
-    public MeasurementPersistenceSubscriber(EventBus eventBus, MeasurementService measurementService) {
+    public MeasurementPersistenceSubscriber(MeasurementEventBus eventBus, MeasurementService measurementService) {
         this.eventBus = eventBus;
         this.measurementService = measurementService;
     }
 
     public void register() {
-        eventBus.subscribe(Measurement.class, this::persistMeasurement);
+        for (String channel : MeasurementChannels.ALL) {
+            eventBus.subscribe(channel, this::persistMeasurement);
+        }
     }
 
-    private void persistMeasurement(Measurement measurement) {
+    private void persistMeasurement(MeasurementEvent event) {
         try {
-            measurementService.save(measurement);
+            measurementService.save(event.measurement());
         } catch (SQLException exception) {
             LOGGER.log(Level.WARNING, "Unable to persist measurement event", exception);
         }

@@ -5,25 +5,28 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import schleifenbauer.domain.Measurement;
-import schleifenbauer.infrastructure.eventbus.EventBus;
+import schleifenbauer.domain.MeasurementChannels;
+import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
+import schleifenbauer.infrastructure.eventbus.MeasurementEventBus;
 
 @Singleton
 public final class MeasurementLogger {
     private static final Logger LOGGER = Logger.getLogger(MeasurementLogger.class.getName());
 
-    private final EventBus eventBus;
+    private final MeasurementEventBus eventBus;
 
     @Inject
-    public MeasurementLogger(EventBus eventBus) {
+    public MeasurementLogger(MeasurementEventBus eventBus) {
         this.eventBus = eventBus;
     }
 
     public void register() {
-        eventBus.subscribe(Measurement.class, this::logMeasurement);
+        for (String channel : MeasurementChannels.ALL) {
+            eventBus.subscribe(channel, this::logMeasurement);
+        }
     }
 
-    private void logMeasurement(Measurement measurement) {
-        LOGGER.info(() -> "Received measurement event: " + measurement);
+    private void logMeasurement(MeasurementEvent event) {
+        LOGGER.info(() -> "Received measurement event: " + event.measurement());
     }
 }

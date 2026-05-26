@@ -9,6 +9,7 @@ import schleifenbauer.client.WeatherClient;
 import schleifenbauer.client.dto.CurrentForecast;
 import schleifenbauer.client.dto.OpenMeteoForecastResponse;
 import schleifenbauer.domain.Measurement;
+import schleifenbauer.domain.MeasurementChannels;
 
 @Singleton
 public final class WeatherMeasurementService {
@@ -24,8 +25,8 @@ public final class WeatherMeasurementService {
         CurrentForecast current = forecast.current();
 
         return List.of(
-            new Measurement("temperature", current.temperature(), current.timestamp()),
-            new Measurement("humidity", current.relativeHumidity(), current.timestamp())
+            new Measurement(MeasurementChannels.TEMPERATURE, current.temperature(), current.timestamp()),
+            new Measurement(MeasurementChannels.HUMIDITY, current.relativeHumidity(), current.timestamp())
         );
     }
 }
