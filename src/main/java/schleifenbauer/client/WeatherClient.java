@@ -1,7 +1,7 @@
 package schleifenbauer.client;
 
-import schleifenbauer.client.dto.OpenMeteoForecastResponse;
+import schleifenbauer.client.dto.OpenMeteoForecastResponseDTO;
 
 public interface WeatherClient {
-    OpenMeteoForecastResponse fetchCurrentWeather();
+    OpenMeteoForecastResponseDTO fetchCurrentWeather();
 }

@@ -12,8 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import schleifenbauer.client.WeatherClient;
-import schleifenbauer.client.dto.CurrentForecast;
-import schleifenbauer.client.dto.OpenMeteoForecastResponse;
+import schleifenbauer.client.dto.CurrentForecastDTO;
+import schleifenbauer.client.dto.OpenMeteoForecastResponseDTO;
 import schleifenbauer.domain.Measurement;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,10 +23,10 @@ class WeatherMeasurementServiceTest {
 
     @Test
     void convertsCurrentWeatherIntoMeasurements() {
-        OpenMeteoForecastResponse forecast = new OpenMeteoForecastResponse(
+        OpenMeteoForecastResponseDTO forecast = new OpenMeteoForecastResponseDTO(
                 52.52,
                 13.41,
-                new CurrentForecast("2026-05-24T00:00", 18.5, 42.0));
+                new CurrentForecastDTO("2026-05-24T00:00", 18.5, 42.0));
         when(weatherClient.fetchCurrentWeather()).thenReturn(forecast);
 
         WeatherMeasurementService service = new WeatherMeasurementService(weatherClient);

@@ -6,8 +6,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import schleifenbauer.client.WeatherClient;
-import schleifenbauer.client.dto.CurrentForecast;
-import schleifenbauer.client.dto.OpenMeteoForecastResponse;
+import schleifenbauer.client.dto.CurrentForecastDTO;
+import schleifenbauer.client.dto.OpenMeteoForecastResponseDTO;
 import schleifenbauer.domain.Measurement;
 import schleifenbauer.domain.MeasurementChannels;
 
@@ -21,8 +21,8 @@ public final class WeatherMeasurementService {
     }
 
     public List<Measurement> fetchMeasurements() {
-        OpenMeteoForecastResponse forecast = weatherClient.fetchCurrentWeather();
-        CurrentForecast current = forecast.current();
+        OpenMeteoForecastResponseDTO forecast = weatherClient.fetchCurrentWeather();
+        CurrentForecastDTO current = forecast.current();
 
         return List.of(
             new Measurement(MeasurementChannels.TEMPERATURE, current.temperature(), current.timestamp()),

@@ -1,7 +1,7 @@
 package schleifenbauer.client.dto;
 
-public record OpenMeteoForecastResponse(
+public record OpenMeteoForecastResponseDTO(
         double latitude,
         double longitude,
-        CurrentForecast current
+        CurrentForecastDTO current
 ) {}

@@ -10,7 +10,7 @@ import java.net.http.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
-import schleifenbauer.client.dto.OpenMeteoForecastResponse;
+import schleifenbauer.client.dto.OpenMeteoForecastResponseDTO;
 
 public final class OpenMeteoWeatherClient implements WeatherClient {
     private static final URI FORECAST_URI = URI.create(
@@ -26,7 +26,7 @@ public final class OpenMeteoWeatherClient implements WeatherClient {
     }
 
     @Override
-    public OpenMeteoForecastResponse fetchCurrentWeather() {
+    public OpenMeteoForecastResponseDTO fetchCurrentWeather() {
         HttpRequest request = HttpRequest.newBuilder(FORECAST_URI).GET().build();
 
         try {
@@ -36,7 +36,7 @@ public final class OpenMeteoWeatherClient implements WeatherClient {
                 throw new IllegalStateException("OpenMeteo request failed with status " + response.statusCode());
             }
 
-            return objectMapper.readValue(response.body(), OpenMeteoForecastResponse.class);
+            return objectMapper.readValue(response.body(), OpenMeteoForecastResponseDTO.class);
         } catch (IOException exception) {
             throw new UncheckedIOException("Unable to deserialize OpenMeteo response", exception);
         } catch (InterruptedException exception) {
