@@ -7,8 +7,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import schleifenbauer.domain.Measurement;
+import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
-import schleifenbauer.infrastructure.eventbus.MeasurementEventBus;
 import schleifenbauer.service.WeatherMeasurementService;
 
 @Singleton
@@ -16,10 +16,10 @@ public final class WeatherPollingJob implements Runnable {
     private static final Logger LOGGER = Logger.getLogger(WeatherPollingJob.class.getName());
 
     private final WeatherMeasurementService weatherMeasurementService;
-    private final MeasurementEventBus eventBus;
+    private final IEventBus eventBus;
 
     @Inject
-    public WeatherPollingJob(WeatherMeasurementService weatherMeasurementService, MeasurementEventBus eventBus) {
+    public WeatherPollingJob(WeatherMeasurementService weatherMeasurementService, IEventBus eventBus) {
         this.weatherMeasurementService = weatherMeasurementService;
         this.eventBus = eventBus;
     }

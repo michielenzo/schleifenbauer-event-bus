@@ -14,14 +14,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import schleifenbauer.domain.Measurement;
 import schleifenbauer.domain.MeasurementChannels;
+import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
-import schleifenbauer.infrastructure.eventbus.MeasurementEventBus;
 import schleifenbauer.service.MeasurementService;
 
 @ExtendWith(MockitoExtension.class)
 class MeasurementPersistenceSubscriberTest {
     @Mock
-    private MeasurementEventBus eventBus;
+    private IEventBus eventBus;
 
     @Mock
     private MeasurementService measurementService;

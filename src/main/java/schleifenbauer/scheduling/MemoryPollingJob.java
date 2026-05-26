@@ -7,8 +7,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import schleifenbauer.domain.Measurement;
+import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
-import schleifenbauer.infrastructure.eventbus.MeasurementEventBus;
 import schleifenbauer.service.MemoryMeasurementService;
 
 @Singleton
@@ -16,10 +16,10 @@ public final class MemoryPollingJob implements Runnable {
     private static final Logger LOGGER = Logger.getLogger(MemoryPollingJob.class.getName());
 
     private final MemoryMeasurementService memoryMeasurementService;
-    private final MeasurementEventBus eventBus;
+    private final IEventBus eventBus;
 
     @Inject
-    public MemoryPollingJob(MemoryMeasurementService memoryMeasurementService, MeasurementEventBus eventBus) {
+    public MemoryPollingJob(MemoryMeasurementService memoryMeasurementService, IEventBus eventBus) {
         this.memoryMeasurementService = memoryMeasurementService;
         this.eventBus = eventBus;
     }

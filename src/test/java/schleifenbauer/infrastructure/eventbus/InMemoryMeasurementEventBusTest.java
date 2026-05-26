@@ -14,7 +14,7 @@ import schleifenbauer.domain.MeasurementChannels;
 class InMemoryMeasurementEventBusTest {
     @Test
     void publishesOnlyToSubscribersOnTheSameChannel() {
-        InMemoryMeasurementEventBus eventBus = new InMemoryMeasurementEventBus();
+        InMemoryEventBus eventBus = new InMemoryEventBus();
         MeasurementEvent temperatureEvent = new MeasurementEvent(new Measurement(
                 MeasurementChannels.TEMPERATURE,
                 18.5,

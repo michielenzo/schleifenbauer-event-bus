@@ -6,17 +6,17 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import schleifenbauer.domain.MeasurementChannels;
+import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
-import schleifenbauer.infrastructure.eventbus.MeasurementEventBus;
 
 @Singleton
 public final class MeasurementLogger {
     private static final Logger LOGGER = Logger.getLogger(MeasurementLogger.class.getName());
 
-    private final MeasurementEventBus eventBus;
+    private final IEventBus eventBus;
 
     @Inject
-    public MeasurementLogger(MeasurementEventBus eventBus) {
+    public MeasurementLogger(IEventBus eventBus) {
         this.eventBus = eventBus;
     }
 

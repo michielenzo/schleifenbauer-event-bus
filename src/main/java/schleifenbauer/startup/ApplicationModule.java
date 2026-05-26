@@ -19,13 +19,13 @@ import schleifenbauer.client.OpenMeteoWeatherClient;
 import schleifenbauer.client.WeatherClient;
 import schleifenbauer.dal.DataSourceProvider;
 import schleifenbauer.dal.DatabaseConfig;
-import schleifenbauer.infrastructure.eventbus.InMemoryMeasurementEventBus;
-import schleifenbauer.infrastructure.eventbus.MeasurementEventBus;
+import schleifenbauer.infrastructure.eventbus.IEventBus;
+import schleifenbauer.infrastructure.eventbus.InMemoryEventBus;
 
 public final class ApplicationModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(MeasurementEventBus.class).to(InMemoryMeasurementEventBus.class).in(Singleton.class);
+        bind(IEventBus.class).to(InMemoryEventBus.class).in(Singleton.class);
         bind(WeatherClient.class).to(OpenMeteoWeatherClient.class).in(Singleton.class);
     }
 

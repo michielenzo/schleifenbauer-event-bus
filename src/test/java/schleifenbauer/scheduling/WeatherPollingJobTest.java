@@ -12,8 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import schleifenbauer.domain.Measurement;
+import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
-import schleifenbauer.infrastructure.eventbus.MeasurementEventBus;
 import schleifenbauer.service.WeatherMeasurementService;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,7 +22,7 @@ class WeatherPollingJobTest {
     private WeatherMeasurementService weatherMeasurementService;
 
     @Mock
-    private MeasurementEventBus eventBus;
+    private IEventBus eventBus;
 
     @Test
     void publishesMeasurementsFromService() {

@@ -8,19 +8,19 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import schleifenbauer.domain.MeasurementChannels;
+import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
-import schleifenbauer.infrastructure.eventbus.MeasurementEventBus;
 import schleifenbauer.service.MeasurementService;
 
 @Singleton
 public final class MeasurementPersistenceSubscriber {
     private static final Logger LOGGER = Logger.getLogger(MeasurementPersistenceSubscriber.class.getName());
 
-    private final MeasurementEventBus eventBus;
+    private final IEventBus eventBus;
     private final MeasurementService measurementService;
 
     @Inject
-    public MeasurementPersistenceSubscriber(MeasurementEventBus eventBus, MeasurementService measurementService) {
+    public MeasurementPersistenceSubscriber(IEventBus eventBus, MeasurementService measurementService) {
         this.eventBus = eventBus;
         this.measurementService = measurementService;
     }

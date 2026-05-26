@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import com.google.inject.Singleton;
 
 @Singleton
-public final class InMemoryMeasurementEventBus implements MeasurementEventBus {
+public final class InMemoryEventBus implements IEventBus {
     private final Map<String, List<Consumer<MeasurementEvent>>> subscribersByChannel = new ConcurrentHashMap<>();
 
     @Override
