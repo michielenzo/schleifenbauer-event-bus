@@ -27,7 +27,6 @@ public final class ApplicationModule extends AbstractModule {
     protected void configure() {
         bind(EventBus.class).to(InMemoryEventBus.class).in(Singleton.class);
         bind(WeatherClient.class).to(OpenMeteoWeatherClient.class).in(Singleton.class);
-        bind(StartupTask.class).to(ApplicationStartupTask.class).in(Singleton.class);
     }
 
     @Provides

@@ -7,7 +7,7 @@ import schleifenbauer.scheduling.MemoryPollingTask;
 import schleifenbauer.scheduling.WeatherPollingTask;
 
 @Singleton
-public final class ApplicationStartupTask implements StartupTask {
+public final class ApplicationStartupTask {
     private final WeatherPollingTask weatherPollingTask;
     private final MemoryPollingTask memoryPollingTask;
 
@@ -17,7 +17,6 @@ public final class ApplicationStartupTask implements StartupTask {
         this.memoryPollingTask = memoryPollingTask;
     }
 
-    @Override
     public void start() {
         weatherPollingTask.start();
         memoryPollingTask.start();

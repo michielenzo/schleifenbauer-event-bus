@@ -15,14 +15,14 @@ public final class Application {
     private final WebServer webServer;
     private final MeasurementLogger measurementLogger;
     private final MeasurementPersistenceSubscriber measurementPersistenceSubscriber;
-    private final StartupTask startupTasks;
+    private final ApplicationStartupTask startupTasks;
 
     @Inject
     public Application(
         WebServer webServer,
         MeasurementLogger measurementLogger,
         MeasurementPersistenceSubscriber measurementPersistenceSubscriber,
-        StartupTask startupTasks
+        ApplicationStartupTask startupTasks
     ) {
         this.webServer = webServer;
         this.measurementLogger = measurementLogger;

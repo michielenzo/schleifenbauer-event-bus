@@ -7,10 +7,8 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import schleifenbauer.startup.StartupTask;
-
 @Singleton
-public final class MemoryPollingTask implements StartupTask {
+public final class MemoryPollingTask extends PollingTask {
     private static final Logger LOGGER = Logger.getLogger(MemoryPollingTask.class.getName());
     private static final long POLLING_INTERVAL_SECONDS = 10;
 
@@ -25,7 +23,7 @@ public final class MemoryPollingTask implements StartupTask {
 
     @Override
     public void start() {
-        scheduler.scheduleAtFixedRate(memoryPollingJob, 0, POLLING_INTERVAL_SECONDS, TimeUnit.SECONDS);
+        setScheduledFuture(scheduler.scheduleAtFixedRate(memoryPollingJob, 0, POLLING_INTERVAL_SECONDS, TimeUnit.SECONDS));
         LOGGER.info("Scheduled memory polling every 10 seconds");
     }
 }

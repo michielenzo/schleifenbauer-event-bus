@@ -7,10 +7,8 @@ import java.util.logging.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import schleifenbauer.startup.StartupTask;
-
 @Singleton
-public final class WeatherPollingTask implements StartupTask {
+public final class WeatherPollingTask extends PollingTask {
     private static final Logger LOGGER = Logger.getLogger(WeatherPollingTask.class.getName());
     private static final long POLLING_INTERVAL_SECONDS = 30;
 
@@ -25,7 +23,7 @@ public final class WeatherPollingTask implements StartupTask {
 
     @Override
     public void start() {
-        scheduler.scheduleAtFixedRate(weatherPollingJob, 0, POLLING_INTERVAL_SECONDS, TimeUnit.SECONDS);
+        setScheduledFuture(scheduler.scheduleAtFixedRate(weatherPollingJob, 0, POLLING_INTERVAL_SECONDS, TimeUnit.SECONDS));
         LOGGER.info("Scheduled weather polling every 30 seconds");
     }
 }
