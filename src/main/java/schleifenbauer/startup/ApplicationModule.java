@@ -31,6 +31,7 @@ public final class ApplicationModule extends AbstractModule {
 
     @Provides
     @Singleton
+    @SuppressWarnings("unused")
     HttpClient provideHttpClient() {
         return HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(10))
@@ -48,12 +49,14 @@ public final class ApplicationModule extends AbstractModule {
 
     @Provides
     @Singleton
+    @SuppressWarnings("unused")
     ScheduledExecutorService provideScheduler() {
         return Executors.newSingleThreadScheduledExecutor();
     }
 
     @Provides
     @Singleton
+    @SuppressWarnings("unused")
     DatabaseConfig provideDatabaseConfig() {
         return new DatabaseConfig(
                 requireEnv("DB_HOST"),
@@ -65,6 +68,7 @@ public final class ApplicationModule extends AbstractModule {
 
     @Provides
     @Singleton
+    @SuppressWarnings("unused")
     DataSource provideDataSource(DataSourceProvider dataSourceProvider) {
         return dataSourceProvider.dataSource();
     }

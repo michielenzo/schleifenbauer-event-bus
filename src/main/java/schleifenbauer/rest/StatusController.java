@@ -1,15 +1,15 @@
 package schleifenbauer.rest;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.google.inject.servlet.RequestScoped;
 
 import io.javalin.http.Context;
-import schleifenbauer.rest.dto.ErrorResponseDto;
-import schleifenbauer.rest.dto.StatusResponseDto;
 import schleifenbauer.infrastructure.cronjob.MemoryCollectorTask;
 import schleifenbauer.infrastructure.cronjob.WeatherCollectorTask;
+import schleifenbauer.rest.dto.ErrorResponseDto;
+import schleifenbauer.rest.dto.StatusResponseDto;
 
-@Singleton
+@RequestScoped
 public final class StatusController {
     private final WeatherCollectorTask weatherCollectorTask;
     private final MemoryCollectorTask memoryCollectorTask;

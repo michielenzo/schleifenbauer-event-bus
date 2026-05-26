@@ -3,14 +3,12 @@ package schleifenbauer.infrastructure.eventbus.subscribers;
 import java.util.logging.Logger;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import schleifenbauer.domain.MeasurementChannels;
 import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
 import schleifenbauer.infrastructure.eventbus.MeasurementEventSubscriber;
 
-@Singleton
 public final class MeasurementLogger implements MeasurementEventSubscriber {
     private static final Logger LOGGER = Logger.getLogger(MeasurementLogger.class.getName());
 

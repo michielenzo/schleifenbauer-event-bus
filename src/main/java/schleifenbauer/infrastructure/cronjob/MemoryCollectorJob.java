@@ -30,7 +30,7 @@ public final class MemoryCollectorJob implements Runnable {
             Measurement measurement = memoryMeasurementService.measure();
             eventBus.publish(new MeasurementEvent(measurement));
         } catch (RuntimeException exception) {
-            LOGGER.log(Level.WARNING, "Memory polling run failed", exception);
+            LOGGER.log(Level.WARNING, "Memory collecting run failed", exception);
         }
     }
 }

@@ -11,11 +11,9 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import schleifenbauer.persistence.entity.MeasurementEntity;
 
-@Singleton
 public final class MeasurementRepository {
 
     private static final String INSERT_QUERY = """

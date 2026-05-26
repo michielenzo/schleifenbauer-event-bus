@@ -3,7 +3,7 @@ package schleifenbauer.rest;
 import java.util.List;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.google.inject.servlet.RequestScoped;
 
 import io.javalin.http.Context;
 import schleifenbauer.domain.Measurement;
@@ -12,7 +12,7 @@ import schleifenbauer.rest.dto.MeasurementDto;
 import schleifenbauer.rest.dto.MeasurementsResponseDto;
 import schleifenbauer.service.MeasurementService;
 
-@Singleton
+@RequestScoped
 public final class MeasurementController {
     private final MeasurementService measurementService;
 

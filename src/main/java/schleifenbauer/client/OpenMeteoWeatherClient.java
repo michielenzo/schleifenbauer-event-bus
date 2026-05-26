@@ -9,11 +9,9 @@ import java.net.http.HttpResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import schleifenbauer.client.dto.OpenMeteoForecastResponse;
 
-@Singleton
 public final class OpenMeteoWeatherClient implements WeatherClient {
     private static final URI FORECAST_URI = URI.create(
             "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,relative_humidity_2m");

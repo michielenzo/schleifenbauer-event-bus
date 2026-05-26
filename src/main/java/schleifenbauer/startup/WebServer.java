@@ -15,6 +15,10 @@ public final class WebServer {
     private final MeasurementController measurementController;
     private final StatusController statusController;
 
+    private static final int PORT = 7000;
+    private static final String MEASUREMENTS_ENDPOINT_PATH = "/api/measurements";
+    private static final String STATUS_ENDPOINT_PATH = "/api/status";
+
     @Inject
     public WebServer(
             MeasurementController measurementController,
@@ -29,12 +33,12 @@ public final class WebServer {
     }
 
     public void start() {
-        app.start(7000);
+        app.start(PORT);
     }
 
 
     private void configureEndpoints(){
-        this.app.get("/api/measurements", measurementController::getLatestMeasurements);
-        this.app.get("/api/status", statusController::getStatus);
+        this.app.get(MEASUREMENTS_ENDPOINT_PATH, measurementController::getLatestMeasurements);
+        this.app.get(STATUS_ENDPOINT_PATH, statusController::getStatus);
     }
 }
