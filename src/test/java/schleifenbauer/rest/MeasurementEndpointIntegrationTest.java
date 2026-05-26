@@ -55,6 +55,8 @@ class MeasurementControllerIntegrationTest {
     private Javalin app;
     private HttpRequest request;
 
+    private static final int PORT = 0;
+
     private final static double TEMPERATURE = 18.5; 
     private final static String CHANNEL = "weather/temperature";
     private static final Long ID = 1l;
@@ -78,7 +80,7 @@ class MeasurementControllerIntegrationTest {
 
         app = Javalin.create(config -> config.jsonMapper(new JavalinJackson(objectMapper)));
         app.get("/api/measurements", controller::getLatestMeasurements);
-        app.start(0);
+        app.start(PORT);
 
         request = HttpRequest.newBuilder()
             .uri(URI.create("http://localhost:" + app.port() + "/api/measurements"))

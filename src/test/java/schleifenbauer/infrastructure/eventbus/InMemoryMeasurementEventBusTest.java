@@ -12,13 +12,19 @@ import schleifenbauer.domain.Measurement;
 import schleifenbauer.domain.MeasurementChannels;
 
 class InMemoryMeasurementEventBusTest {
+
+    private static final String MEASUREMENT_DATETIME = "2026-05-24T00:00";
+    private static final double VALUE = 18.5;
+
     @Test
     void publishesOnlyToSubscribersOnTheSameChannel() {
         InMemoryEventBus eventBus = new InMemoryEventBus();
         MeasurementEvent temperatureEvent = new MeasurementEvent(new Measurement(
                 MeasurementChannels.TEMPERATURE,
-                18.5,
-                LocalDateTime.parse("2026-05-24T00:00")));
+                VALUE,
+                LocalDateTime.parse(MEASUREMENT_DATETIME))
+        );
+                
         List<MeasurementEvent> receivedTemperatureEvents = new ArrayList<>();
         List<MeasurementEvent> receivedHumidityEvents = new ArrayList<>();
 

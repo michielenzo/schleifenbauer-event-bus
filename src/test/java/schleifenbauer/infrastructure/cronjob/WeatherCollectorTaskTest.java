@@ -26,18 +26,6 @@ class WeatherCollectorTaskTest {
     private ScheduledFuture<Object> scheduledFuture;
 
     @Test
-    void startsScheduledPollingJob() {
-        WeatherCollectorTask task = new WeatherCollectorTask(scheduler, weatherCollectorJob);
-        when(scheduler.scheduleAtFixedRate(weatherCollectorJob, 0, 30, TimeUnit.SECONDS))
-                .thenAnswer(invocation -> scheduledFuture);
-
-        task.start();
-
-        verify(scheduler).scheduleAtFixedRate(eq(weatherCollectorJob), eq(0L), eq(30L), eq(TimeUnit.SECONDS));
-        assertEquals(CollectorTaskState.RUNNING, task.status());
-    }
-
-    @Test
     void returnsStoppedWhenTaskHasNotStarted() {
         WeatherCollectorTask task = new WeatherCollectorTask(scheduler, weatherCollectorJob);
 

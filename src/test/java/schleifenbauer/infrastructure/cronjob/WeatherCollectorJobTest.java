@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import schleifenbauer.domain.Measurement;
+import schleifenbauer.domain.MeasurementChannels;
 import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
 import schleifenbauer.service.WeatherMeasurementService;
@@ -24,16 +25,23 @@ class WeatherCollectorJobTest {
     @Mock
     private IEventBus eventBus;
 
+    private static final String MEASUREMENT_DATETIME = "2026-05-24T00:00";
+    private static final double VALUE = 42.0;
+
     @Test
     void publishesMeasurementsFromService() {
         Measurement temperatureMeasurement = new Measurement(
-                "temperature",
-                18.5,
-                LocalDateTime.parse("2026-05-24T00:00"));
+                MeasurementChannels.TEMPERATURE,
+                VALUE,
+                LocalDateTime.parse(MEASUREMENT_DATETIME)
+        );
+
         Measurement humidityMeasurement = new Measurement(
-                "humidity",
-                42.0,
-                LocalDateTime.parse("2026-05-24T00:00"));
+                MeasurementChannels.HUMIDITY,
+                VALUE,
+                LocalDateTime.parse(MEASUREMENT_DATETIME)
+        );
+
         when(weatherMeasurementService.fetchMeasurements()).thenReturn(List.of(temperatureMeasurement, humidityMeasurement));
 
         WeatherCollectorJob job = new WeatherCollectorJob(weatherMeasurementService, eventBus);
