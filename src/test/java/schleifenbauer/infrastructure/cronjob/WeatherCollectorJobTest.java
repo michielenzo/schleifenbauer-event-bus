@@ -1,4 +1,4 @@
-package schleifenbauer.scheduling;
+package schleifenbauer.infrastructure.cronjob;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

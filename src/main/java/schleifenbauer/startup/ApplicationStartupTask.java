@@ -3,8 +3,8 @@ package schleifenbauer.startup;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import schleifenbauer.scheduling.MemoryCollectorTask;
-import schleifenbauer.scheduling.WeatherCollectorTask;
+import schleifenbauer.infrastructure.cronjob.MemoryCollectorTask;
+import schleifenbauer.infrastructure.cronjob.WeatherCollectorTask;
 
 @Singleton
 public final class ApplicationStartupTask {

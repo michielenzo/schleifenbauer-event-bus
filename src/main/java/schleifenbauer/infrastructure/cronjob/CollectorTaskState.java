@@ -1,4 +1,4 @@
-package schleifenbauer.scheduling;
+package schleifenbauer.infrastructure.cronjob;
 
 public enum CollectorTaskState {
     RUNNING,

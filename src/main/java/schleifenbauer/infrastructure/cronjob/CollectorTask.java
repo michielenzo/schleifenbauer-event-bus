@@ -1,4 +1,4 @@
-package schleifenbauer.scheduling;
+package schleifenbauer.infrastructure.cronjob;
 
 import java.util.concurrent.ScheduledFuture;
 

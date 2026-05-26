@@ -1,4 +1,4 @@
-package schleifenbauer.scheduling;
+package schleifenbauer.infrastructure.cronjob;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
@@ -15,41 +15,41 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class WeatherCollectorTaskTest {
+class MemoryCollectorTaskTest {
     @Mock
     private ScheduledExecutorService scheduler;
 
     @Mock
-    private WeatherCollectorJob weatherCollectorJob;
+    private MemoryCollectorJob memoryCollectorJob;
 
     @Mock
     private ScheduledFuture<Object> scheduledFuture;
 
     @Test
     void startsScheduledPollingJob() {
-        WeatherCollectorTask task = new WeatherCollectorTask(scheduler, weatherCollectorJob);
-        when(scheduler.scheduleAtFixedRate(weatherCollectorJob, 0, 30, TimeUnit.SECONDS))
+        MemoryCollectorTask task = new MemoryCollectorTask(scheduler, memoryCollectorJob);
+        when(scheduler.scheduleAtFixedRate(memoryCollectorJob, 0, 10, TimeUnit.SECONDS))
                 .thenAnswer(invocation -> scheduledFuture);
 
         task.start();
 
-        verify(scheduler).scheduleAtFixedRate(eq(weatherCollectorJob), eq(0L), eq(30L), eq(TimeUnit.SECONDS));
+        verify(scheduler).scheduleAtFixedRate(eq(memoryCollectorJob), eq(0L), eq(10L), eq(TimeUnit.SECONDS));
         assertEquals(CollectorTaskState.RUNNING, task.status());
     }
 
     @Test
     void returnsStoppedWhenTaskHasNotStarted() {
-        WeatherCollectorTask task = new WeatherCollectorTask(scheduler, weatherCollectorJob);
+        MemoryCollectorTask task = new MemoryCollectorTask(scheduler, memoryCollectorJob);
 
         assertEquals(CollectorTaskState.STOPPED, task.status());
     }
 
     @Test
-    void returnsStoppedWhenScheduledFutureIsCancelled() {
-        WeatherCollectorTask task = new WeatherCollectorTask(scheduler, weatherCollectorJob);
-        when(scheduler.scheduleAtFixedRate(weatherCollectorJob, 0, 30, TimeUnit.SECONDS))
+    void returnsStoppedWhenScheduledFutureIsDone() {
+        MemoryCollectorTask task = new MemoryCollectorTask(scheduler, memoryCollectorJob);
+        when(scheduler.scheduleAtFixedRate(memoryCollectorJob, 0, 10, TimeUnit.SECONDS))
                 .thenAnswer(invocation -> scheduledFuture);
-        when(scheduledFuture.isCancelled()).thenReturn(true);
+        when(scheduledFuture.isDone()).thenReturn(true);
 
         task.start();
 

@@ -11,9 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import io.javalin.http.Context;
 import schleifenbauer.rest.dto.ErrorResponseDto;
 import schleifenbauer.rest.dto.StatusResponseDto;
-import schleifenbauer.scheduling.CollectorTaskState;
-import schleifenbauer.scheduling.MemoryCollectorTask;
-import schleifenbauer.scheduling.WeatherCollectorTask;
+import schleifenbauer.infrastructure.cronjob.CollectorTaskState;
+import schleifenbauer.infrastructure.cronjob.MemoryCollectorTask;
+import schleifenbauer.infrastructure.cronjob.WeatherCollectorTask;
 
 @ExtendWith(MockitoExtension.class)
 class StatusControllerTest {

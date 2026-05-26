@@ -6,8 +6,8 @@ import com.google.inject.Singleton;
 import io.javalin.http.Context;
 import schleifenbauer.rest.dto.ErrorResponseDto;
 import schleifenbauer.rest.dto.StatusResponseDto;
-import schleifenbauer.scheduling.MemoryCollectorTask;
-import schleifenbauer.scheduling.WeatherCollectorTask;
+import schleifenbauer.infrastructure.cronjob.MemoryCollectorTask;
+import schleifenbauer.infrastructure.cronjob.WeatherCollectorTask;
 
 @Singleton
 public final class StatusController {
