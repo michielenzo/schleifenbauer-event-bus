@@ -23,7 +23,12 @@ public final class MeasurementController {
 
     public void getLatestMeasurements(Context context) {
         try {
-            List<MeasurementDto> measurements = measurementService.getLatestMeasurements()
+            String channel = context.queryParam("channel");
+            List<Measurement> latestMeasurements = channel == null || channel.isBlank()
+                    ? measurementService.getLatestMeasurements()
+                    : measurementService.getLatestMeasurementsByChannel(channel);
+
+            List<MeasurementDto> measurements = latestMeasurements
                             .stream()
                             .map(this::toDto)
                             .toList();

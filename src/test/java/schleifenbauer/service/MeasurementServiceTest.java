@@ -59,4 +59,22 @@ class MeasurementServiceTest {
                 72.3,
                 LocalDateTime.parse("2026-05-24T01:00:00"))), measurements);
     }
+
+    @Test
+    void mapsFilteredMeasurementEntitiesToDomainMeasurements() throws SQLException {
+        MeasurementService service = new MeasurementService(measurementRepository);
+        MeasurementEntity measurementEntity = new MeasurementEntity(
+                2L,
+                "weather/temperature",
+                18.5,
+                LocalDateTime.parse("2026-05-24T12:30:00"));
+        when(measurementRepository.findLatestByChannel("weather/temperature", 50)).thenReturn(List.of(measurementEntity));
+
+        List<Measurement> measurements = service.getLatestMeasurementsByChannel("weather/temperature");
+
+        org.junit.jupiter.api.Assertions.assertEquals(List.of(new Measurement(
+                "weather/temperature",
+                18.5,
+                LocalDateTime.parse("2026-05-24T12:30:00"))), measurements);
+    }
 }

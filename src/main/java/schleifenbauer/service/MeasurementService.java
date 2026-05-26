@@ -32,6 +32,13 @@ public final class MeasurementService {
                 .toList();
     }
 
+    public List<Measurement> getLatestMeasurementsByChannel(String channel) throws SQLException {
+        return measurementRepository.findLatestByChannel(channel, LATEST_MEASUREMENTS_SIZE)
+                .stream()
+                .map(this::toDomain)
+                .toList();
+    }
+
     private MeasurementEntity toEntity(Measurement measurement) {
         return new MeasurementEntity(
                 null,

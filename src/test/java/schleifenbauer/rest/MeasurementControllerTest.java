@@ -46,6 +46,26 @@ class MeasurementControllerTest {
     }
 
     @Test
+    void returnsLatestMeasurementsFilteredByChannel() throws SQLException {
+        Measurement measurement = new Measurement(
+                "weather/temperature",
+                18.5,
+                LocalDateTime.parse("2026-05-24T12:30:00"));
+        MeasurementController controller = new MeasurementController(measurementService);
+        when(context.queryParam("channel")).thenReturn("weather/temperature");
+        when(measurementService.getLatestMeasurementsByChannel("weather/temperature")).thenReturn(List.of(measurement));
+
+        controller.getLatestMeasurements(context);
+
+        verify(measurementService).getLatestMeasurementsByChannel("weather/temperature");
+        verify(context).status(200);
+        verify(context).json(new MeasurementsResponseDto(List.of(new MeasurementDto(
+                "weather/temperature",
+                18.5,
+                LocalDateTime.parse("2026-05-24T12:30:00")))));
+    }
+
+    @Test
     void returnsErrorResponseDtoWhenServiceFails() throws SQLException {
         MeasurementController controller = new MeasurementController(measurementService);
         when(measurementService.getLatestMeasurements()).thenThrow(new SQLException("boom"));

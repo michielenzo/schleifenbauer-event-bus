@@ -22,9 +22,18 @@ public final class MeasurementRepository {
             INSERT INTO measurements (channel, value, timestamp)
             VALUES (?, ?, ?)
             """;
+            
     private static final String FIND_LATEST_QUERY = """
             SELECT id, channel, value, timestamp
             FROM measurements
+            ORDER BY timestamp DESC
+            LIMIT ?
+            """;
+
+    private static final String FIND_LATEST_BY_CHANNEL_QUERY = """
+            SELECT id, channel, value, timestamp
+            FROM measurements
+            WHERE channel = ?
             ORDER BY timestamp DESC
             LIMIT ?
             """;
@@ -55,19 +64,35 @@ public final class MeasurementRepository {
         ) {
             statement.setInt(1, limit);
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                List<MeasurementEntity> measurements = new ArrayList<>();
+            return readMeasurements(statement);
+        }
+    }
 
-                while (resultSet.next()) {
-                    measurements.add(new MeasurementEntity(
-                            resultSet.getLong("id"),
-                            resultSet.getString("channel"),
-                            resultSet.getDouble("value"),
-                            resultSet.getTimestamp("timestamp").toLocalDateTime()));
-                }
+    public List<MeasurementEntity> findLatestByChannel(String channel, int limit) throws SQLException {
+        try (
+            Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(FIND_LATEST_BY_CHANNEL_QUERY)
+        ) {
+            statement.setString(1, channel);
+            statement.setInt(2, limit);
 
-                return measurements;
+            return readMeasurements(statement);
+        }
+    }
+
+    private List<MeasurementEntity> readMeasurements(PreparedStatement statement) throws SQLException {
+        try (ResultSet resultSet = statement.executeQuery()) {
+            List<MeasurementEntity> measurements = new ArrayList<>();
+
+            while (resultSet.next()) {
+                measurements.add(new MeasurementEntity(
+                        resultSet.getLong("id"),
+                        resultSet.getString("channel"),
+                        resultSet.getDouble("value"),
+                        resultSet.getTimestamp("timestamp").toLocalDateTime()));
             }
+
+            return measurements;
         }
     }
 }
