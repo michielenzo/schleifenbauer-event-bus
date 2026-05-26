@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +15,7 @@ import schleifenbauer.domain.Measurement;
 import schleifenbauer.domain.MeasurementChannels;
 import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
+import schleifenbauer.infrastructure.eventbus.MeasurementEventSubscriber;
 import schleifenbauer.service.MeasurementService;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,7 +38,6 @@ class MeasurementPersistenceSubscriberTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void logsAndContinuesWhenPersistenceFails() throws SQLException {
         Measurement measurement = new Measurement(
                 "temperature",
@@ -50,11 +49,11 @@ class MeasurementPersistenceSubscriberTest {
 
         subscriber.register();
 
-        org.mockito.ArgumentCaptor<Consumer<MeasurementEvent>> captor =
-                org.mockito.ArgumentCaptor.forClass((Class<Consumer<MeasurementEvent>>) (Class<?>) Consumer.class);
+        org.mockito.ArgumentCaptor<MeasurementEventSubscriber> captor =
+                org.mockito.ArgumentCaptor.forClass(MeasurementEventSubscriber.class);
         verify(eventBus).subscribe(org.mockito.ArgumentMatchers.eq(MeasurementChannels.TEMPERATURE), captor.capture());
 
-        captor.getValue().accept(event);
+        captor.getValue().onMeasurementEvent(event);
 
         verify(measurementService).save(measurement);
     }

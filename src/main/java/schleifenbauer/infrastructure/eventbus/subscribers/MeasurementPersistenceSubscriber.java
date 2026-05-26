@@ -10,10 +10,11 @@ import com.google.inject.Singleton;
 import schleifenbauer.domain.MeasurementChannels;
 import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
+import schleifenbauer.infrastructure.eventbus.MeasurementEventSubscriber;
 import schleifenbauer.service.MeasurementService;
 
 @Singleton
-public final class MeasurementPersistenceSubscriber {
+public final class MeasurementPersistenceSubscriber implements MeasurementEventSubscriber {
     private static final Logger LOGGER = Logger.getLogger(MeasurementPersistenceSubscriber.class.getName());
 
     private final IEventBus eventBus;
@@ -27,11 +28,12 @@ public final class MeasurementPersistenceSubscriber {
 
     public void register() {
         for (String channel : MeasurementChannels.ALL) {
-            eventBus.subscribe(channel, this::persistMeasurement);
+            eventBus.subscribe(channel, this);
         }
     }
 
-    private void persistMeasurement(MeasurementEvent event) {
+    @Override
+    public void onMeasurementEvent(MeasurementEvent event) {
         try {
             measurementService.save(event.measurement());
         } catch (SQLException exception) {

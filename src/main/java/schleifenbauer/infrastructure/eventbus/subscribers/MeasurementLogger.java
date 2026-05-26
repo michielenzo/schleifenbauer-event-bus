@@ -8,9 +8,10 @@ import com.google.inject.Singleton;
 import schleifenbauer.domain.MeasurementChannels;
 import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.MeasurementEvent;
+import schleifenbauer.infrastructure.eventbus.MeasurementEventSubscriber;
 
 @Singleton
-public final class MeasurementLogger {
+public final class MeasurementLogger implements MeasurementEventSubscriber {
     private static final Logger LOGGER = Logger.getLogger(MeasurementLogger.class.getName());
 
     private final IEventBus eventBus;
@@ -22,11 +23,12 @@ public final class MeasurementLogger {
 
     public void register() {
         for (String channel : MeasurementChannels.ALL) {
-            eventBus.subscribe(channel, this::logMeasurement);
+            eventBus.subscribe(channel, this);
         }
     }
 
-    private void logMeasurement(MeasurementEvent event) {
+    @Override
+    public void onMeasurementEvent(MeasurementEvent event) {
         LOGGER.info(() -> "Received measurement event: " + event.measurement());
     }
 }
