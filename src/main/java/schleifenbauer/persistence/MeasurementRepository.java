@@ -2,8 +2,11 @@ package schleifenbauer.persistence;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -18,6 +21,12 @@ public final class MeasurementRepository {
     private static final String INSERT_QUERY = """
             INSERT INTO measurements (channel, value, timestamp)
             VALUES (?, ?, ?)
+            """;
+    private static final String FIND_LATEST_QUERY = """
+            SELECT id, channel, value, timestamp
+            FROM measurements
+            ORDER BY timestamp DESC
+            LIMIT ?
             """;
 
     private final DataSource dataSource;
@@ -36,6 +45,29 @@ public final class MeasurementRepository {
             statement.setDouble(2, measurementEntity.value());
             statement.setTimestamp(3, Timestamp.valueOf(measurementEntity.timestamp()));
             statement.executeUpdate();
+        }
+    }
+
+    public List<MeasurementEntity> findLatest(int limit) throws SQLException {
+        try (
+            Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(FIND_LATEST_QUERY)
+        ) {
+            statement.setInt(1, limit);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<MeasurementEntity> measurements = new ArrayList<>();
+
+                while (resultSet.next()) {
+                    measurements.add(new MeasurementEntity(
+                            resultSet.getLong("id"),
+                            resultSet.getString("channel"),
+                            resultSet.getDouble("value"),
+                            resultSet.getTimestamp("timestamp").toLocalDateTime()));
+                }
+
+                return measurements;
+            }
         }
     }
 }

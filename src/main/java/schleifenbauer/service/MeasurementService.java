@@ -1,6 +1,7 @@
 package schleifenbauer.service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -11,6 +12,8 @@ import schleifenbauer.persistence.entity.MeasurementEntity;
 
 @Singleton
 public final class MeasurementService {
+    private static final int LATEST_MEASUREMENTS_SIZE = 50;
+
     private final MeasurementRepository measurementRepository;
 
     @Inject
@@ -22,6 +25,13 @@ public final class MeasurementService {
         measurementRepository.save(toEntity(measurement));
     }
 
+    public List<Measurement> getLatestMeasurements() throws SQLException {
+        return measurementRepository.findLatest(LATEST_MEASUREMENTS_SIZE)
+                .stream()
+                .map(this::toDomain)
+                .toList();
+    }
+
     private MeasurementEntity toEntity(Measurement measurement) {
         return new MeasurementEntity(
                 null,
@@ -30,7 +40,6 @@ public final class MeasurementService {
                 measurement.timestamp());
     }
 
-    @SuppressWarnings("unused")
     private Measurement toDomain(MeasurementEntity measurementEntity) {
         return new Measurement(
                 measurementEntity.channel(),
