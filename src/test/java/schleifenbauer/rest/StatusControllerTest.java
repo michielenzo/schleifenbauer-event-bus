@@ -27,7 +27,7 @@ class StatusControllerTest {
     private Context context;
 
     @Test
-    void returnsStatusForEachPollingJob() {
+    void returnsStatusForEachCollectorJob() {
         StatusController controller = new StatusController(weatherCollectorTask, memoryCollectorTask);
         when(weatherCollectorTask.status()).thenReturn(CollectorTaskState.RUNNING);
         when(memoryCollectorTask.status()).thenReturn(CollectorTaskState.STOPPED);
