@@ -42,3 +42,4 @@ If I had more time, I would explore the following improvements:
 - Add more possible states to the CollectorTask class. e.g PAUSED, NOT_YET_STARTED.
 - Consider splitting the combined measurements endpoint into separate endpoints if filtered and unfiltered queries ever need different limits or different behavior.
 - Add more integration tests to cover more scenario's. Maybe tests which also spins up a test database in a docker container to fully end-to-end test the application.
+- Log selected handled exceptions, such as failed requests to Open-Meteo, to a file so diagnosing production issues is easier.
