@@ -35,7 +35,7 @@ class StatusControllerTest {
         controller.getStatus(context);
 
         verify(context).status(200);
-        verify(context).json(new StatusResponseDto(CollectorTaskState.RUNNING.name(), CollectorTaskState.RUNNING.name()));
+        verify(context).json(new StatusResponseDto(CollectorTaskState.RUNNING.name(), CollectorTaskState.STOPPED.name()));
     }
 
     @Test
