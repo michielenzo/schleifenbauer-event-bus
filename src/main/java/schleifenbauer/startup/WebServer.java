@@ -36,7 +36,6 @@ public final class WebServer {
         app.start(PORT);
     }
 
-
     private void configureEndpoints(){
         this.app.get(MEASUREMENTS_ENDPOINT_PATH, measurementController::getLatestMeasurements);
         this.app.get(STATUS_ENDPOINT_PATH, statusController::getStatus);
