@@ -10,7 +10,9 @@ import com.google.inject.Singleton;
 @Singleton
 public final class WeatherCollectorTask extends CollectorTask {
     private static final Logger LOGGER = Logger.getLogger(WeatherCollectorTask.class.getName());
-    private static final long POLLING_INTERVAL_SECONDS = 30;
+
+    private static final long INTERVAL = 30L;
+    private static final long INITIAL_DELAY = 0L;
 
     private final ScheduledExecutorService scheduler;
     private final WeatherCollectorJob weatherCollectorJob;
@@ -23,7 +25,7 @@ public final class WeatherCollectorTask extends CollectorTask {
 
     @Override
     public void start() {
-        setScheduledFuture(scheduler.scheduleAtFixedRate(weatherCollectorJob, 0, POLLING_INTERVAL_SECONDS, TimeUnit.SECONDS));
+        setScheduledFuture(scheduler.scheduleAtFixedRate(weatherCollectorJob, INITIAL_DELAY, INTERVAL, TimeUnit.SECONDS));
         LOGGER.info("Scheduled weather polling every 30 seconds");
     }
 }

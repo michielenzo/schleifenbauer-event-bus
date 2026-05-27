@@ -10,7 +10,9 @@ import com.google.inject.Singleton;
 @Singleton
 public final class MemoryCollectorTask extends CollectorTask {
     private static final Logger LOGGER = Logger.getLogger(MemoryCollectorTask.class.getName());
-    private static final long POLLING_INTERVAL_SECONDS = 10;
+    
+    private static final long INTERVAL = 10;
+    private static final long INITIAL_DELAY = 0;
 
     private final ScheduledExecutorService scheduler;
     private final MemoryCollectorJob memoryCollectorJob;
@@ -23,7 +25,7 @@ public final class MemoryCollectorTask extends CollectorTask {
 
     @Override
     public void start() {
-        setScheduledFuture(scheduler.scheduleAtFixedRate(memoryCollectorJob, 0, POLLING_INTERVAL_SECONDS, TimeUnit.SECONDS));
+        setScheduledFuture(scheduler.scheduleAtFixedRate(memoryCollectorJob, INITIAL_DELAY, INTERVAL, TimeUnit.SECONDS));
         LOGGER.info("Scheduled memory polling every 10 seconds");
     }
 }

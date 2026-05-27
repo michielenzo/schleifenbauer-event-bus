@@ -29,9 +29,11 @@ class MemoryCollectorJobTest {
     @Test
     void testThatPublishesMeasurementFromService() {
         Measurement measurement = new Measurement(
-                MeasurementChannels.MEMORY_FREE_BYTES,
-                MEMORY_FREE_BYTES,
-                LocalDateTime.parse(DATETIME));
+            MeasurementChannels.MEMORY_FREE_BYTES,
+            MEMORY_FREE_BYTES,
+            LocalDateTime.parse(DATETIME)
+        );
+
         when(memoryMeasurementService.measure()).thenReturn(measurement);
 
         MemoryCollectorJob job = new MemoryCollectorJob(memoryMeasurementService, eventBus);
