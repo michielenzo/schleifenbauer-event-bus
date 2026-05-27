@@ -1,4 +1,4 @@
-package schleifenbauer.dal;
+package schleifenbauer.persistence.dal;
 
 public record DatabaseConfig(
     String host,

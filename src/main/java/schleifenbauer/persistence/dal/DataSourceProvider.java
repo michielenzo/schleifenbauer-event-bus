@@ -1,4 +1,4 @@
-package schleifenbauer.dal;
+package schleifenbauer.persistence.dal;
 
 import javax.sql.DataSource;
 

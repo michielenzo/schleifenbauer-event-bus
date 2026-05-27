@@ -17,10 +17,10 @@ import com.google.inject.Singleton;
 
 import schleifenbauer.client.OpenMeteoWeatherClient;
 import schleifenbauer.client.WeatherClient;
-import schleifenbauer.dal.DataSourceProvider;
-import schleifenbauer.dal.DatabaseConfig;
 import schleifenbauer.infrastructure.eventbus.IEventBus;
 import schleifenbauer.infrastructure.eventbus.InMemoryEventBus;
+import schleifenbauer.persistence.dal.DataSourceProvider;
+import schleifenbauer.persistence.dal.DatabaseConfig;
 
 public final class ApplicationModule extends AbstractModule {
     @Override
