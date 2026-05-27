@@ -4,7 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.inject.Inject;
-import com.google.inject.servlet.RequestScoped;
 
 import io.javalin.http.Context;
 import schleifenbauer.infrastructure.cronjob.MemoryCollectorTask;
@@ -12,7 +11,6 @@ import schleifenbauer.infrastructure.cronjob.WeatherCollectorTask;
 import schleifenbauer.rest.dto.ErrorResponseDto;
 import schleifenbauer.rest.dto.StatusResponseDto;
 
-@RequestScoped
 public final class StatusController {
     private static final Logger LOGGER = Logger.getLogger(StatusController.class.getName());
 

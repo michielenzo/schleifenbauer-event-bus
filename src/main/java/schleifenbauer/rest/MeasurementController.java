@@ -4,14 +4,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.inject.Inject;
-import com.google.inject.servlet.RequestScoped;
 
 import io.javalin.http.Context;
 import schleifenbauer.rest.dto.ErrorResponseDto;
 import schleifenbauer.rest.dto.MeasurementsResponseDto;
 import schleifenbauer.service.MeasurementService;
 
-@RequestScoped
 public final class MeasurementController {
     private static final Logger LOGGER = Logger.getLogger(MeasurementController.class.getName());
 
